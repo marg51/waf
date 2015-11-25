@@ -1,0 +1,9 @@
+<span promise="story.promise"><b>{{story.title}}</b> ( {{story.tags.is[0]}} points)</span>
+<span class="pull-right">
+    <small ng-if="story.promise.isLoading"><i class="fa fa-spin fa-circle-o-notch"></i> Saving</small>
+    <small ng-if="story.promise.isLoaded"><i class="fa fa-check"></i> Saved!</small>
+    <span ng-if="story.promise.hasError">Mh, oops</span>
+</span>
+
+<p>{{story.body}}</p>
+<em ng-if="story.tags.has.length">{{story.tags.has.join(' ')}}</em>
