@@ -7,7 +7,7 @@ export function interceptor() {
             if(new RegExp("^"+GITHUB_ENDPOINT).test(config.url)) {
                 config.headers = config.headers || {};
 
-                config.headers["Authorization"] = "token 4b1728d425b70852e44753c09c9d63b0f5063d34"
+                config.headers["Authorization"] = "token "+GITHUB_TOKEN
             }
 
             return config;
