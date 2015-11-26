@@ -3,7 +3,7 @@ export function column() {
     return {
         template: require('./column.html'),
         scope: {
-            stories:'='
+            column:'='
         },
         controller: ColumnController
     }

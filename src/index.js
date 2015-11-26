@@ -50,6 +50,21 @@ import {init as columnInit} from './components/column/'
 columnInit(app)
 
 
+import {combineReducers} from 'redux'
+import {newStore} from './store'
+
+import {reducer as stories} from './components/story/reducer'
+import {reducer as board} from './components/board/reducer'
+import {reducer as columns} from './components/column/reducer'
+
+export const store = newStore(combineReducers({
+    stories,
+    board,
+    columns
+}))
+
+
+app.constant('store', store)
 
 app.directive('promise', function() {
     return {

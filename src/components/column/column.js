@@ -1,14 +1,14 @@
-export function ColumnController($scope, GithubService, GithubConfigManager, GithubLabelsManager, $timeout) {
+export function ColumnController($scope, store) {
+    $scope.$on('$destroy', store.subscribe(() => {
+        $scope.state = store.getState()
+    }))
+    $scope.state = store.getState()
+
     $scope.onInsert = function(story, index) {
-        story.promise = GithubLabelsManager.updateStoryColumn(story, $scope.$parent.column)
-            .then(() => {
-                $timeout(() => {
-                    delete story.promise
-                }, 5000)
-            })
+        store.dispatch({type: 'COLUMN:STORY:ADD', id: $scope.column.id, index, storyId: story})
     }
 
      $scope.onMove = function(story) {
-        $scope.stories.splice($scope.stories.indexOf(story), 1)
+        store.dispatch({type: 'COLUMN:STORY:REMOVE', id: $scope.column.id, storyId: story})
     }
 }

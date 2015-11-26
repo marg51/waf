@@ -10,6 +10,8 @@ export function reducer(state = INIT_STATE, action) {
             state.columns.splice(state.columns.index, 0, action.columnId)
 
             return _.merge({}, state, {columns: [...state.columns]})
+        case 'BOARD:COLUMN:ADD':
+            return _.merge({}, state, {columns: [...state.columns, action.columnId]})
     }
 
     return state;

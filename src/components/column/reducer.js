@@ -16,18 +16,18 @@ export function reducer(state = INIT_STATE, action) {
             return _.merge({}, state, {
                 items: {
                     [action.id]: {
-                        stories: [...state.items[action.id].stories.slice(0,action.index), action.storyId, ...state.items[action.id].stories.slice(action.index+1)]
+                        stories: [...state.items[action.id].stories.slice(0,action.index), action.storyId, ...state.items[action.id].stories.slice(action.index)]
                     }
                 }
             })
         case 'COLUMN:STORY:REMOVE':
             checkColumn(state, action.id)
 
-            var index = state.items[action.id].stories.indexOf(action.storyId)
+            state.items[action.id].stories.splice(state.items[action.id].stories.indexOf(action.storyId),1)
             return _.merge({}, state, {
                 items: {
                     [action.id]: {
-                        stories: [...state.items[action.id].stories.slice(0,index), ...state.items[action.id].stories.slice(index+1)]
+                        stories: [...state.items[action.id].stories]
                     }
                 }
             })
@@ -46,8 +46,6 @@ export function reducer(state = INIT_STATE, action) {
                 }
             })
         case 'COLUMN:CREATE':
-            checkColumn(state, action.id)
-
             return _.merge({}, state, {
                 items: {
                     [action.id]: action.object
