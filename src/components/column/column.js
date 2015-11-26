@@ -4,11 +4,13 @@ export function ColumnController($scope, store) {
     }))
     $scope.state = store.getState()
 
-    $scope.onInsert = function(story, index) {
-        store.dispatch({type: 'COLUMN:STORY:ADD', id: $scope.column.id, index, storyId: story})
-    }
-
-     $scope.onMove = function(story) {
-        store.dispatch({type: 'COLUMN:STORY:REMOVE', id: $scope.column.id, storyId: story})
+    $scope.onInsert = function(storyId, index, sourceId) {
+        if(sourceId !== $scope.column.id) {
+            store.dispatch({type: 'COLUMN:STORY:ADD', id: $scope.column.id, index, storyId})
+            store.dispatch({type: 'COLUMN:STORY:REMOVE', id: sourceId, storyId})
+        }
+        else {
+            store.dispatch({type: 'COLUMN:STORY:MOVE', id: $scope.column.id, index, storyId})
+        }
     }
 }

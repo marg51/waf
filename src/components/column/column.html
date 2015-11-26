@@ -1,4 +1,4 @@
 <div class="column-title">{{column.name}}</div>
-<div dnd-list="[]" dnd-inserted="onInsert(item,index,external)" class="column-content">
-    <div ng-repeat="storyId in column.stories" story="state.stories.items[storyId]" dnd-draggable="storyId" dnd-moved="onMove(storyId)"/>
+<div dnd-list="[]" dnd-inserted="onInsert(item,index,type)" class="column-content">
+    <div ng-repeat="storyId in column.stories" story="state.stories.items[storyId]" dnd-draggable="storyId" dnd-moved="onMove(storyId,event, index, external, type)" dnd-type="column.id"/>
 </story>
