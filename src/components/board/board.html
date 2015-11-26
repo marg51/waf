@@ -1,6 +1,9 @@
 <div class="board-content">
     <div class="board-menu">
         <div class="board-menu-row"> <span class="board-menu-icon"><i class="fa fa-history"></i></span> History </div>
+        <div class="board-menu-row">
+            <span class="board-menu-icon" ng-class="{'no-network': !state.ui.socket_connected}"><i class="fa fa-wifi"></i></span>
+        </div>
         <div class="board-history">
             <div ng-repeat="action in state.history">
                 <div class="board-menu-row">

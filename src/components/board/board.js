@@ -12,6 +12,12 @@ export function BoardController($scope, store, $timeout) {
       socket.on('dispatch', function(action){
         store.dispatch(action)
       });
+    socket.on('connect', () => {
+        store.dispatch({type: 'UI:SOCKET:CONNECTED'})
+    })
+    socket.on('disconnect', () => {
+        store.dispatch({type: 'UI:SOCKET:DISCONNECTED'})
+    })
 
     $scope.addColumn = function(column) {
         column.id = _.keys($scope.state.columns.items).length+1

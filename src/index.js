@@ -55,11 +55,13 @@ import {newStore} from './store'
 import {reducer as stories} from './components/story/reducer'
 import {reducer as board} from './components/board/reducer'
 import {reducer as columns} from './components/column/reducer'
+import {reducer as ui} from './reducer'
 
 export const store = newStore(combineReducers({
     stories,
     board,
     columns,
+    ui,
     history: (state = [], action) => {
         if(action.type == "HISTORY:SYNC") {
             return _.map(state, history => {
