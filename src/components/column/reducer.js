@@ -10,6 +10,8 @@ export function checkColumn(state, id) {
 
 export function reducer(state = INIT_STATE, action) {
     switch(action.type) {
+        case '//init/state':
+            return action.state.columns
         case 'COLUMN:STORY:ADD':
             checkColumn(state, action.id)
 

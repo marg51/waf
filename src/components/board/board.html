@@ -1,3 +1,20 @@
 <div class="board-content">
-    <div ng-repeat="columnId in state.board.columns" column="state.columns.items[columnId]"/>
+    <div class="board-menu">
+        <div class="board-menu-row"> <span class="board-menu-icon"><i class="fa fa-history"></i></span> History </div>
+        <div class="board-history">
+            <div ng-repeat="action in state.history">
+                <div class="board-menu-row">
+                    <span class="board-menu-icon">
+                        <i class="fa fa-check" ng-if="action.sync && !action.from_network"></i>
+                        <i class="fa fa-circle-o-notch fa-spin" ng-if="!action.sync && !action.from_network"></i>
+                        <i class="fa fa-bluetooth-b" ng-if="action.from_network"></i>
+                    </span>
+                    <small>{{ action.object.type }}</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div ng-repeat="columnId in state.board.columns" column="state.columns.items[columnId]"></div>
+    <column-create on-save="addColumn(column)" ng-if="__.addColumn"></column-create>
+    <button class="btn btn-default" ng-click="__.addColumn = !__.addColumn" class="pull-right">+ column</button>
 </div>

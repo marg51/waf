@@ -1,0 +1,6 @@
+<div class="column-title" ng-form="createColumn">
+    <input ng-model="column.name" placeholder="select a name" ng-required="true"/>
+    <button class="btn btn-primary" ng-click="onSave({column:column})" ng-disabled="!createColumn.$valid">
+        <i class="fa fa-check"></i>
+    </button>
+</div>

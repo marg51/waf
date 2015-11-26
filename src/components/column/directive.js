@@ -8,3 +8,12 @@ export function column() {
         controller: ColumnController
     }
 }
+
+export function createColumn() {
+    return {
+        template: require('./create.html'),
+        scope: {
+            onSave: '&'
+        }
+    }
+}

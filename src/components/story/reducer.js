@@ -10,6 +10,8 @@ function checkStory(state, id) {
 
 export function reducer(state = INIT_STATE, action) {
     switch(action.type) {
+        case '//init/state':
+            return action.state.stories
         case 'STORY:CREATE':
             return _.merge({},
                 state,

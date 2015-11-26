@@ -1,30 +1,30 @@
-export function BoardController($scope, store) {
+export function BoardController($scope, store, $timeout) {
 
     $scope.$on('$destroy', store.subscribe(() => {
         $scope.state = store.getState()
+        $timeout(angular.noop,0)
     }))
 
-    $scope.fetch = function() {
-        $scope.stories = [{
-            id: 1,
-            title: "SALUT"
-        }, {
-            id: 2,
-            title: "WOOP WOOP"
-        }]
+    socket.emit('state', function(){});
+      socket.on('state', function(state){
+        store.dispatch({type: '//init/state', state})
+      });
+      socket.on('dispatch', function(action){
+        store.dispatch(action)
+      });
 
-        store.dispatch({type: 'COLUMN:CREATE', id:1, object: {id:1, name: 'doing', stories: []}})
-        store.dispatch({type: 'COLUMN:CREATE', id:2, object: {id:2, name: 'review', stories: []}})
+    $scope.addColumn = function(column) {
+        column.id = _.keys($scope.state.columns.items).length+1
+        column.stories = []
 
-        store.dispatch({type: 'STORY:CREATE', id:1, object:{id:1, title:"salut", size: 1}})
-        store.dispatch({type: 'STORY:CREATE', id:2, object:{id:2, title:"woop woop", size: 2}})
-
-        store.dispatch({type: 'COLUMN:STORY:ADD', id: 1, index: 0, storyId: 1})
-        store.dispatch({type: 'COLUMN:STORY:ADD', id: 2, index: 0, storyId: 2})
-
-        store.dispatch({type: 'BOARD:COLUMN:ADD', columnId: 1})
-        store.dispatch({type: 'BOARD:COLUMN:ADD', columnId: 2})
+        store.dispatch({type: '//GROUP', items: [
+                {type: 'COLUMN:CREATE', id:column.id, object: column},
+                {type: 'BOARD:COLUMN:ADD', columnId: column.id}
+            ],
+            name: 'COLUMN:CREATE',
+            sync: true
+        })
+        $scope.__.addColumn = false
     }
 
-    $scope.fetch()
 }

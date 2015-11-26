@@ -4,5 +4,4 @@
 window.angular = require('angular')
 window._ = require('lodash')._;
 require('angular-ui-router')
-require('angular-bootstrap')
 require('angular-drag-and-drop-lists')

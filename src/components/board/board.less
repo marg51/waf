@@ -1,5 +1,29 @@
 board {
     .board-content {
         display: flex;
+        height: 100vh;
+    }
+    .board-menu {
+        width: 30px;
+        background: #14425e;
+        color: white;
+        overflow: hidden;
+        .board-history {
+            display: flex;
+            flex-direction: column-reverse;
+        }
+
+        .board-menu-icon {
+            display: inline-block;
+            width: 30px;
+            text-align: center;
+        }
+        .board-menu-row {
+            white-space: nowrap;
+        }
+
+        &:hover {
+            width: 200px;
+        }
     }
 }

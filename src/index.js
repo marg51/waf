@@ -1,6 +1,5 @@
 var app = angular.module('app', [
     // 'ui.router',
-    'ui.bootstrap',
     'dndLists'
 ])
 
@@ -60,9 +59,23 @@ import {reducer as columns} from './components/column/reducer'
 export const store = newStore(combineReducers({
     stories,
     board,
-    columns
+    columns,
+    history: (state = [], action) => {
+        if(action.type == "HISTORY:SYNC") {
+            return _.map(state, history => {
+                if(history.id == action.id) {
+                    return _.merge({}, history, {sync: true})
+                }
+
+                return history
+            })
+        }
+
+        return state
+    }
 }))
 
+window.__store = store
 
 app.constant('store', store)
 
@@ -90,3 +103,20 @@ app.directive('promise', function() {
         }
     }
 });
+
+  window.socket = io('http://localhost:4042');
+
+  app.factory('socket', ($rootScope) => {
+    return {
+        emit(name, data, callback) {
+            $rootScope.$apply(() => {
+                socket.emit(name, data, callback)
+            })
+        },
+        on(name, callback) {
+            $rootScope.$apply(() => {
+                socket.on(name, callback)
+            })
+        }
+    }
+  })
