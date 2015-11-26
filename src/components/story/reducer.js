@@ -79,7 +79,7 @@ export function reducer(state = INIT_STATE, action) {
         case 'STORY:TODO:CHECK':
             checkStory(state, action.id)
 
-            story.todos[todoId].checked = true
+            state.stories[action.id].todos[todoId].checked = true
 
             return _.merge({},
                 state,
@@ -94,7 +94,7 @@ export function reducer(state = INIT_STATE, action) {
         case 'STORY:TODO:UNCHECK':
             checkStory(state, action.id)
 
-            story.todos[todoId].checked = false
+            state.stories[action.id].todos[todoId].checked = false
 
             return _.merge({},
                 state,

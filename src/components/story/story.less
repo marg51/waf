@@ -1,4 +1,5 @@
 [story] {
+    position: relative;
     display: inline-block;
     margin: 2px 0;
     border: 1px solid #DDD;
@@ -7,11 +8,32 @@
     background: white;
     box-shadow: 2px 2px 2px rgba(0,0,0,0.1);
     width: 100%;
-    height: 50px;
+    min-height: 50px;
+    cursor: move;
+    [dnd-nodrag] {
+        cursor: default;
+    }
+    .story-infos {
+        margin: -5px;
+        padding: 3px;
+        border-left: 1px solid #F1F1F1;
+        height: 48px;
+        width: 30px;
+        text-align: center;
+        font-size: 1.1em;
 
-    &.updating {
-        border-style: dashed;
-        opacity: 0.5;
+        .story-size {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            background: #14425e;
+            color: white;
+        }
+    }
+
+    .story-extended {
+        margin-top: 20px;
+        min-height: 50px;
     }
 }
 

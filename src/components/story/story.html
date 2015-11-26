@@ -1,9 +1,13 @@
-<span promise="story.promise"><b>{{story.title}}</b> ( {{story.size}} points)</span>
-<span class="pull-right">
-    <small ng-if="story.promise.isLoading"><i class="fa fa-spin fa-circle-o-notch"></i> Saving</small>
-    <small ng-if="story.promise.isLoaded"><i class="fa fa-check"></i> Saved!</small>
-    <span ng-if="story.promise.hasError">Mh, oops</span>
-</span>
-
-<p>{{story.body}}</p>
-<em ng-if="story.tags.has.length">{{story.tags.has.join(' ')}}</em>
+<div dnd-nodrag>
+    <span><u>{{story.title}}</u></span>
+    <div class="story-infos pull-right">
+        <span class="story-size">{{story.size}}</span>
+        <span ng-click="__.expend = !__.expend"><i class="fa fa-angle-double-down"></i></span>
+    </div>
+    <div ng-if="__.expend" class="story-extended">
+        <div ng-repeat="todo in story.todos" ng-init="local_todo = todo.checked">
+            <input type="checkbox" ng-model="local_todo" ng-click="toggleTodo($index, local_todo)"/> {{todo.title}}
+        </div>
+        <input ng-model="__.todo" placeholder="add todo"/><button class="btn btn-xs btn-default" ng-click="story.todos.push({title: __.todo});__.todo = ''">oh</button>
+    </div>
+</div>
