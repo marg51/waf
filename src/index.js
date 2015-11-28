@@ -4,7 +4,6 @@ var app = angular.module('app', [
 ])
 
 
-
 // function AppConfig($stateProvider, $urlRouterProvider, $locationProvider) {
 //     $locationProvider.html5Mode(true);
 //     $urlRouterProvider.otherwise('/');
@@ -34,6 +33,8 @@ function AppRun($rootScope, GithubService, GithubLabelsManager, GithubConfigMana
     window.__GithubConfigManager = GithubConfigManager
     window.__GithubLabelsManager = GithubLabelsManager
 }
+
+require('./index.less')
 
 // app.config(AppConfig)
 app.run(AppRun)
@@ -106,6 +107,23 @@ app.directive('promise', function() {
     }
 });
 
+app.directive('onEnter', function() {
+    return (scope, elm, attr) => {
+        elm.on('keydown', function(event) {
+            if(event.keyCode == 13) {
+                scope.$eval(attr.onEnter)
+            }
+        })
+    }
+})
+
+var uuid = require('node-uuid')
+
+app.factory('uuid', function() {
+    return function(type) {
+        return type+'_'+uuid.v4()
+    }
+})
   window.socket = io('http://localhost:4042');
 
   app.factory('socket', ($rootScope) => {

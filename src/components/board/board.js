@@ -1,4 +1,4 @@
-export function BoardController($scope, store, $timeout) {
+export function BoardController($scope, store, $timeout, uuid) {
 
     $scope.$on('$destroy', store.subscribe(() => {
         $scope.state = store.getState()
@@ -20,7 +20,7 @@ export function BoardController($scope, store, $timeout) {
     })
 
     $scope.addColumn = function(column) {
-        column.id = _.keys($scope.state.columns.items).length+1
+        column.id = uuid('column')
         column.stories = []
 
         store.dispatch({type: '//GROUP', items: [

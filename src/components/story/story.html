@@ -2,12 +2,33 @@
     <span><u>{{story.title}}</u></span>
     <div class="story-infos pull-right">
         <span class="story-size">{{story.size}}</span>
-        <span ng-click="__.expend = !__.expend"><i class="fa fa-angle-double-down"></i></span>
+        <span ng-click="openStory(story.id)" ng-if="!state.ui.stories[story.id].open"><i class="fa fa-angle-double-down"></i></span>
+        <span ng-click="closeStory(story.id)" ng-if="state.ui.stories[story.id].open"><i class="fa fa-angle-double-up"></i></span>
     </div>
-    <div ng-if="__.expend" class="story-extended">
-        <div ng-repeat="todo in story.todos" ng-init="local_todo = todo.checked">
-            <input type="checkbox" ng-model="local_todo" ng-click="toggleTodo($index, local_todo)"/> {{todo.title}}
+    <span>{{story.checked_todo}}/{{story.todos.length}}</span>
+    <div ng-if="state.ui.stories[story.id].open" class="story-extended">
+        <h4>Acceptance criteria</h4>
+        <div class="todo-list" dnd-list="[]" dnd-inserted="onTodoMove(item,index,type)" dnd-dragover="dragoverCallback(event, index, external, type)">
+            <div ng-repeat="todo in story.todos" class="todo" dnd-draggable="todo.id" dnd-type="['todo',story]">
+                <span class="handle">
+                    <i class="fa fa-ellipsis-v"></i><i class="fa fa-ellipsis-v"></i>
+                </span>
+                <label>
+                    <input type="checkbox" ng-model="todo.checked" ng-click="toggleTodo(todo.id, todo.checked)"/>
+                    {{todo.title}}
+                </label>
+                <span ng-click="removeTodo(todo.id)" class="pull-right"><i class="fa fa-times"></i></span>
+                <span ng-click="cloneTodo(todo, $index)" class="todo-kind pull-right"><i class="fa fa-clone"></i></span>
+
+                <span class="pull-right todo-kind">
+                    <i class="fa fa-desktop" ng-class="{inactive: !todo.is_design}" ng-click="setTodoType(todo,'design')"></i>
+                    <i class="fa fa-file-code-o" ng-class="{inactive: !todo.is_frontend}" ng-click="setTodoType(todo,'frontend')"></i>
+                    <i class="fa fa-database" ng-class="{inactive: !todo.is_backend}" ng-click="setTodoType(todo,'backend')"></i>
+                </span>
+            </div>
         </div>
-        <input ng-model="__.todo" placeholder="add todo"/><button class="btn btn-xs btn-default" ng-click="story.todos.push({title: __.todo});__.todo = ''">oh</button>
+        <div class="form" ng-form="todo">
+            <input ng-model="__.todo" placeholder="add todo" class="form-control" on-enter="addTodo(__.todo);__.todo = ''"/>
+        </div>
     </div>
 </div>

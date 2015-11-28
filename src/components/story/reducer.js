@@ -48,6 +48,31 @@ export function reducer(state = INIT_STATE, action) {
                 }
             )
 
+        case 'STORY:TODO:MOVE':
+            checkStory(state, action.id)
+
+            var elm = _.filter(state.items[action.id].todos, (todo) => todo.id == action.todoId)
+
+            if(!elm[0]) return state
+
+            var index = state.items[action.id].todos.indexOf(elm[0])
+
+            if(index < action.index)
+                action.index--
+
+            state.items[action.id].todos.splice(index, 1)
+            state.items[action.id].todos.splice(action.index,0,elm[0])
+
+            return _.merge({},
+                state,
+                {
+                    items: {
+                        [action.id]: {
+                            todos: [...state.items[action.id].todos]
+                        }
+                    }
+                }
+            )
 
         case 'STORY:TODO:ADD':
             checkStory(state, action.id)
@@ -57,7 +82,7 @@ export function reducer(state = INIT_STATE, action) {
                 {
                     items: {
                         [action.id]: {
-                            todos: [...story.todos, action.todo]
+                            todos: [...state.items[action.id].todos, action.todo]
                         }
                     }
                 }
@@ -65,12 +90,13 @@ export function reducer(state = INIT_STATE, action) {
         case 'STORY:TODO:REMOVE':
             checkStory(state, action.id)
 
+            state.items[action.id].todos = _.filter(state.items[action.id].todos, (todo) => todo.id != action.todoId)
             return _.merge({},
                 state,
                 {
                     items: {
                         [action.id]: {
-                            todos: [...story.todos.slice(0, action.todoId), ...story.todos.slice(index+1)]
+                            todos: [...state.items[action.id].todos]
                         }
                     }
                 }
@@ -79,14 +105,19 @@ export function reducer(state = INIT_STATE, action) {
         case 'STORY:TODO:CHECK':
             checkStory(state, action.id)
 
-            state.stories[action.id].todos[todoId].checked = true
+            state.items[action.id].todos = _.map(state.items[action.id].todos, todo => {
+                if(todo.id == action.todoId) {
+                    todo.checked = true
+                }
+                return todo
+            })
 
             return _.merge({},
                 state,
                 {
                     items: {
                         [action.id]: {
-                            todos: [...story.todos]
+                            todos: [...state.items[action.id]]
                         }
                     }
                 }
@@ -94,14 +125,60 @@ export function reducer(state = INIT_STATE, action) {
         case 'STORY:TODO:UNCHECK':
             checkStory(state, action.id)
 
-            state.stories[action.id].todos[todoId].checked = false
+            state.items[action.id].todos = _.map(state.items[action.id].todos, todo => {
+                if(todo.id == action.todoId) {
+                    todo.checked = false
+                }
+                return todo
+            })
 
             return _.merge({},
                 state,
                 {
                     items: {
                         [action.id]: {
-                            todos: [...story.todos]
+                            todos: [...state.items[action.id].todos]
+                        }
+                    }
+                }
+            )
+
+        case 'STORY:TODO:ADD_TYPE':
+            checkStory(state, action.id)
+
+            state.items[action.id].todos = _.map(state.items[action.id].todos, todo => {
+                if(todo.id == action.todoId) {
+                    todo['is_'+action.kind] = true
+                }
+                return todo
+            })
+
+            return _.merge({},
+                state,
+                {
+                    items: {
+                        [action.id]: {
+                            todos: [...state.items[action.id].todos]
+                        }
+                    }
+                }
+            )
+        case 'STORY:TODO:REMOVE_TYPE':
+            checkStory(state, action.id)
+
+            state.items[action.id].todos = _.map(state.items[action.id].todos, todo => {
+                if(todo.id == action.todoId) {
+                    todo['is_'+action.kind] = false
+                }
+                return todo
+            })
+
+            return _.merge({},
+                state,
+                {
+                    items: {
+                        [action.id]: {
+                            todos: [...state.items[action.id].todos]
                         }
                     }
                 }
