@@ -1,47 +1,40 @@
 var app = angular.module('app', [
-    // 'ui.router',
-    'dndLists'
+    'ui.router',
+    'dndLists',
+    'ui.bootstrap'
 ])
 
 
-// function AppConfig($stateProvider, $urlRouterProvider, $locationProvider) {
-//     $locationProvider.html5Mode(true);
-//     $urlRouterProvider.otherwise('/');
+function AppConfig($stateProvider, $urlRouterProvider, $locationProvider) {
+    $locationProvider.html5Mode(true);
+    $urlRouterProvider.otherwise('/');
 
-//     $stateProvider.state('main', {
-//         url: '/',
-//         template: "<playlist/>",
-//         controller: function($scope, $timeout, PlaylistService, PlayerService) {
-//             $scope.state = store.getState()
+    $stateProvider.state('main', {
+        url: '/',
+        template: "<board/>"
+    })
 
-//             window.x = function() {
-//                 $scope.state = store.getState()
-//                 $scope.$apply()
-//             }
+    $stateProvider.state('login', {
+        url: '/login?code',
+        template: "<login/>",
+        controller: function($location, $stateParams, $http) {
+            var code = $stateParams.code;
+            $location.search('code','github')
 
-//             $scope.$on('$destroy', store.subscribe(() => {
-//                 $scope.state = store.getState()
-//                 $timeout(angular.noop,0)
-//             }))
-//         }
-//     })
-// }
+            $http.get('/auth/github?code='+code)
+        }
+    })
+}
 
-function AppRun($rootScope, GithubService, GithubLabelsManager, GithubConfigManager) {
+function AppRun($rootScope) {
     window.__$scope = $rootScope
-    window.__GithubService = GithubService
-    window.__GithubConfigManager = GithubConfigManager
-    window.__GithubLabelsManager = GithubLabelsManager
 }
 
 require('./index.less')
 
-// app.config(AppConfig)
+app.config(AppConfig)
 app.run(AppRun)
 
-
-import {init as githubInit} from './components/github/'
-githubInit(app)
 import {init as boardInit} from './components/board/'
 boardInit(app)
 import {init as storyInit} from './components/story/'

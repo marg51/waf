@@ -1,7 +1,12 @@
-export function StoryController($scope, store, uuid) {
+export function StoryController($scope, $modal, store, uuid) {
+    $scope.inModal = !!($scope.$dismiss && $scope.$close)
     $scope.$on('$destroy', store.subscribe(() => {
         $scope.state = store.getState()
     }))
+
+    $scope.updateStory = function(object) {
+        store.dispatch({type: 'STORY:UPDATE', id:$scope.story.id, object, sync:true})
+    }
 
     $scope.toggleTodo = function(todoId, value) {
         if(value) {
@@ -41,6 +46,16 @@ export function StoryController($scope, store, uuid) {
     }
     $scope.cloneTodo = function(todo, index) {
         $scope.addTodo(todo.title, index)
+    }
+
+    $scope.openModal = function() {
+        if($scope.inModal) return
+        $modal.open({
+            template: require('./story.html'),
+            controller: StoryController,
+            scope: $scope,
+            size: 'lg'
+        })
     }
 
     $scope.$watch('story', story => {

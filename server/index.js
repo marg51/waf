@@ -1,3 +1,5 @@
+// require('./auth')
+
 var fs = require('fs')
 
 global._ = require('lodash')
@@ -11,13 +13,13 @@ var io = require('socket.io')(4042);
 
 store.dispatch({type:'//init/state', state})
 
-store.subscribe(() => {
+store.subscribe(_.debounce(() => {
     fs.writeFile('./state.json', JSON.stringify(store.getState()))
-})
+}, 500))
 
 io.on('connection', function (socket) {
   socket.on('state', function (data) {
-    socket.emit('state', store.getState());
+    socket.emit('state', _.pick(store.getState(), ["stories", "columns", "board"]));
   });
 
   socket.on('dispatch', function(action, callback) {

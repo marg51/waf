@@ -22,4 +22,10 @@ export function ColumnController($scope, store) {
     $scope.dragoverCallback = function(event, index, external, type) {
         return type[0] == "story"
     }
+
+    $scope.$watch('column', column => {
+        if(column) {
+            // didn't finish, I wanted to count the sum of points
+        }
+    })
 }

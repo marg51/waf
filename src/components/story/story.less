@@ -1,4 +1,4 @@
-[story] {
+.story-element {
     position: relative;
     display: inline-block;
     margin: 2px 0;
@@ -28,6 +28,11 @@
             height: 20px;
             background: #14425e;
             color: white;
+            input {
+                color: #14425e;
+                width: 23px;
+                padding: 0;
+            }
         }
     }
 
@@ -41,6 +46,7 @@
             border-top: 1px solid #14425e;
             border-bottom: 1px solid #14425e;
             padding: 10px;
+            margin-bottom: 10px;
 
             .todo {
                 border-bottom: #F1F1F1;
@@ -50,13 +56,6 @@
                     margin-right: 10px;
                 }
 
-                .handle {
-                    margin-right: 10px;
-                    i {
-                        margin-right: 2px;
-                        font-size: 1.1em;
-                    }
-                }
                 i.inactive {
                     opacity: 0.2;
                 }
@@ -77,6 +76,14 @@
             }
         }
 
+    }
+    .handle {
+        cursor: move;
+        margin-right: 10px;
+        i {
+            margin-right: 2px;
+            font-size: 1.1em;
+        }
     }
 
 

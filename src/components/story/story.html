@@ -1,34 +1,51 @@
-<div dnd-nodrag>
-    <span><u>{{story.title}}</u></span>
-    <div class="story-infos pull-right">
-        <span class="story-size">{{story.size}}</span>
-        <span ng-click="openStory(story.id)" ng-if="!state.ui.stories[story.id].open"><i class="fa fa-angle-double-down"></i></span>
-        <span ng-click="closeStory(story.id)" ng-if="state.ui.stories[story.id].open"><i class="fa fa-angle-double-up"></i></span>
-    </div>
-    <span>{{story.checked_todo}}/{{story.todos.length}}</span>
-    <div ng-if="state.ui.stories[story.id].open" class="story-extended">
-        <h4>Acceptance criteria</h4>
-        <div class="todo-list" dnd-list="[]" dnd-inserted="onTodoMove(item,index,type)" dnd-dragover="dragoverCallback(event, index, external, type)">
-            <div ng-repeat="todo in story.todos" class="todo" dnd-draggable="todo.id" dnd-type="['todo',story]">
-                <span class="handle">
-                    <i class="fa fa-ellipsis-v"></i><i class="fa fa-ellipsis-v"></i>
-                </span>
-                <label>
-                    <input type="checkbox" ng-model="todo.checked" ng-click="toggleTodo(todo.id, todo.checked)"/>
-                    {{todo.title}}
-                </label>
-                <span ng-click="removeTodo(todo.id)" class="pull-right"><i class="fa fa-times"></i></span>
-                <span ng-click="cloneTodo(todo, $index)" class="todo-kind pull-right"><i class="fa fa-clone"></i></span>
-
-                <span class="pull-right todo-kind">
-                    <i class="fa fa-desktop" ng-class="{inactive: !todo.is_design}" ng-click="setTodoType(todo,'design')"></i>
-                    <i class="fa fa-file-code-o" ng-class="{inactive: !todo.is_frontend}" ng-click="setTodoType(todo,'frontend')"></i>
-                    <i class="fa fa-database" ng-class="{inactive: !todo.is_backend}" ng-click="setTodoType(todo,'backend')"></i>
-                </span>
-            </div>
+<div class="story-element">
+    <span class="handle pull-left" ng-if="!inModal">
+        <i class="fa fa-ellipsis-v"></i><i class="fa fa-ellipsis-v"></i>
+    </span>
+    <div dnd-nodrag>
+        <span ng-click="openModal()" ng-if="!inModal"><u>{{story.title}}</u></span>
+        <span ng-if="inModal"><input ng-model="story.title" ng-change="updateStory({title: story.title})"/></span>
+        <div class="story-infos pull-right">
+            <span class="story-size" ng-if="!inModal">{{story.size}}</span>
+            <span class="story-size" ng-if="inModal"><input ng-model="story.size" ng-change="updateStory({size: story.size})" ng-maxlength="2"/></span>
+            <span ng-click="openStory(story.id)" ng-if="!state.ui.stories[story.id].open && !inModal"><i class="fa fa-angle-double-down"></i></span>
+            <span ng-click="closeStory(story.id)" ng-if="state.ui.stories[story.id].open && !inModal"><i class="fa fa-angle-double-up"></i></span>
         </div>
-        <div class="form" ng-form="todo">
-            <input ng-model="__.todo" placeholder="add todo" class="form-control" on-enter="addTodo(__.todo);__.todo = ''"/>
+        <span>{{story.checked_todo}}/{{story.todos.length}}</span>
+        <div ng-if="state.ui.stories[story.id].open || inModal" class="story-extended">
+            <div ng-if="story.description && !inModal">
+                <em>{{story.description}}</em>
+            </div>
+            <div ng-if="inModal">
+                <textarea class="form-control" ng-model="story.description" ng-change="updateStory({description: story.description})"></textarea>
+            </div>
+            <div ng-if="story.todos.length">
+                <h4>Acceptance criteria</h4>
+                <div class="todo-list" dnd-list="[]" dnd-inserted="onTodoMove(item,index,type)" dnd-dragover="dragoverCallback(event, index, external, type)">
+                    <div ng-repeat="todo in story.todos" class="todo" dnd-draggable="todo.id" dnd-type="['todo',story]">
+                        <span class="handle pull-left">
+                            <i class="fa fa-ellipsis-v"></i><i class="fa fa-ellipsis-v"></i>
+                        </span>
+                        <div dnd-nodrag>
+                            <label>
+                                <input type="checkbox" ng-model="todo.checked" ng-click="toggleTodo(todo.id, todo.checked)"/>
+                                {{todo.title}}
+                            </label>
+                            <span ng-click="removeTodo(todo.id)" class="pull-right"><i class="fa fa-times"></i></span>
+                            <span ng-click="cloneTodo(todo, $index)" class="todo-kind pull-right"><i class="fa fa-clone"></i></span>
+
+                            <span class="pull-right todo-kind">
+                                <i class="fa fa-desktop" ng-class="{inactive: !todo.is_design}" ng-click="setTodoType(todo,'design')"></i>
+                                <i class="fa fa-file-code-o" ng-class="{inactive: !todo.is_frontend}" ng-click="setTodoType(todo,'frontend')"></i>
+                                <i class="fa fa-database" ng-class="{inactive: !todo.is_backend}" ng-click="setTodoType(todo,'backend')"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form" ng-form="todo">
+                <input ng-model="__.todo" placeholder="add todo" class="form-control" on-enter="addTodo(__.todo);__.todo = ''"/>
+            </div>
         </div>
     </div>
 </div>

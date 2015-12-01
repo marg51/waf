@@ -2,3 +2,6 @@
 <div dnd-list="[]" dnd-inserted="onInsert(item,index,type)" class="column-content" dnd-dragover="dragoverCallback(event, index, external, type)">
     <div ng-repeat="storyId in column.stories" story="state.stories.items[storyId]" dnd-draggable="storyId" dnd-type="['story',column]"/>
 </div>
+<div class="column-add-story" ng-click="addStory()">
+    Add a story
+</div>
