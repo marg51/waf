@@ -1,22 +1,29 @@
 <div class="story-element">
-    <span class="handle pull-left" ng-if="!inModal">
+    <span class="handle pull-left" ng-if="!state.ui.stories[story.id].edit">
         <i class="fa fa-ellipsis-v"></i><i class="fa fa-ellipsis-v"></i>
     </span>
     <div dnd-nodrag>
-        <span ng-click="openModal()" ng-if="!inModal"><u>{{story.title}}</u></span>
-        <span ng-if="inModal"><input ng-model="story.title" ng-change="updateStory({title: story.title})"/></span>
+        <span ng-click="state.ui.stories[story.id].edit = true" ng-if="!state.ui.stories[story.id].edit"><u>{{story.title}}</u></span>
+        <span ng-if="state.ui.stories[story.id].edit"><input ng-model="story.title" ng-change="updateStory({title: story.title})"/></span>
         <div class="story-infos pull-right">
-            <span class="story-size" ng-if="!inModal">{{story.size}}</span>
-            <span class="story-size" ng-if="inModal"><input ng-model="story.size" ng-change="updateStory({size: story.size})" ng-maxlength="2"/></span>
-            <span ng-click="openStory(story.id)" ng-if="!state.ui.stories[story.id].open && !inModal"><i class="fa fa-angle-double-down"></i></span>
-            <span ng-click="closeStory(story.id)" ng-if="state.ui.stories[story.id].open && !inModal"><i class="fa fa-angle-double-up"></i></span>
+            <span class="story-size" ng-if="!state.ui.stories[story.id].edit">{{story.size}}</span>
+            <span class="story-size" ng-if="state.ui.stories[story.id].edit"><input ng-model="story.size" ng-change="updateStory({size: story.size})" ng-maxlength="2"/></span>
+
+            <span ng-click="editStory(story.id)" ng-if="!state.ui.stories[story.id].edit"><i class="fa fa-pencil"></i></span>
+
+            <span ng-click="stopEditStory(story.id)" ng-if="state.ui.stories[story.id].edit"><i class="fa fa-remove"></i></span>
+
+            <span ng-click="openStory(story.id)" ng-if="!state.ui.stories[story.id].open"><i class="fa fa-angle-double-down"></i></span>
+            <span ng-click="closeStory(story.id)" ng-if="state.ui.stories[story.id].open"><i class="fa fa-angle-double-up"></i></span>
+
+
         </div>
         <span>{{story.checked_todo}}/{{story.todos.length}}</span>
-        <div ng-if="state.ui.stories[story.id].open || inModal" class="story-extended">
-            <div ng-if="story.description && !inModal">
+        <div ng-if="state.ui.stories[story.id].open" class="story-extended">
+            <div ng-if="story.description && !state.ui.stories[story.id].edit">
                 <em>{{story.description}}</em>
             </div>
-            <div ng-if="inModal">
+            <div ng-if="state.ui.stories[story.id].edit">
                 <textarea class="form-control" ng-model="story.description" ng-change="updateStory({description: story.description})"></textarea>
             </div>
             <div ng-if="story.todos.length">
@@ -29,15 +36,26 @@
                         <div dnd-nodrag>
                             <label>
                                 <input type="checkbox" ng-model="todo.checked" ng-click="toggleTodo(todo.id, todo.checked)"/>
-                                {{todo.title}}
+                                <span ng-if="!state.ui.stories[story.id].edit">
+                                    {{todo.title}}
+                                </span>
                             </label>
-                            <span ng-click="removeTodo(todo.id)" class="pull-right"><i class="fa fa-times"></i></span>
-                            <span ng-click="cloneTodo(todo, $index)" class="todo-kind pull-right"><i class="fa fa-clone"></i></span>
+                            <span ng-if="state.ui.stories[story.id].edit">
+                                <input ng-model="todo.title" ng-change="updateTodo(todo.id, {title: todo.title})"/>
+                            </span>
 
-                            <span class="pull-right todo-kind">
-                                <i class="fa fa-desktop" ng-class="{inactive: !todo.is_design}" ng-click="setTodoType(todo,'design')"></i>
-                                <i class="fa fa-file-code-o" ng-class="{inactive: !todo.is_frontend}" ng-click="setTodoType(todo,'frontend')"></i>
-                                <i class="fa fa-database" ng-class="{inactive: !todo.is_backend}" ng-click="setTodoType(todo,'backend')"></i>
+                            <span class="todo-actions-hover">
+                                <i class="fa fa-info-circle"></i>
+                                <span class="todo-actions">
+                                    <span>
+                                        <i class="fa fa-desktop" ng-class="{inactive: !todo.is_design}" ng-click="setTodoType(todo,'design')"></i>
+                                        <i class="fa fa-file-code-o" ng-class="{inactive: !todo.is_frontend}" ng-click="setTodoType(todo,'frontend')"></i>
+                                        <i class="fa fa-database" ng-class="{inactive: !todo.is_backend}" ng-click="setTodoType(todo,'backend')"></i>
+                                    </span>
+
+                                    <span ng-click="removeTodo(todo.id)" class="pull-right"><i class="fa fa-times"></i></span>
+                                    <span ng-click="cloneTodo(todo, $index)" class="todo-kind pull-right"><i class="fa fa-clone"></i></span>
+                                </span>
                             </span>
                         </div>
                     </div>

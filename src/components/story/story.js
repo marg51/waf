@@ -1,8 +1,8 @@
-export function StoryController($scope, $modal, store, uuid) {
-    $scope.inModal = !!($scope.$dismiss && $scope.$close)
+export function StoryController($scope, store, uuid) {
     $scope.$on('$destroy', store.subscribe(() => {
         $scope.state = store.getState()
     }))
+    $scope.state = store.getState()
 
     $scope.updateStory = function(object) {
         store.dispatch({type: 'STORY:UPDATE', id:$scope.story.id, object, sync:true})
@@ -23,11 +23,20 @@ export function StoryController($scope, $modal, store, uuid) {
     $scope.removeTodo = function(todoId) {
         store.dispatch({type: 'STORY:TODO:REMOVE', id:$scope.story.id, todoId, sync:true})
     }
+    $scope.updateTodo = function(todoId, object) {
+        store.dispatch({type: 'STORY:TODO:UPDATE', id:$scope.story.id, todoId, object, sync:true})
+    }
     $scope.openStory = function(id) {
         store.dispatch({type: 'UI:STORY:OPEN', id})
     }
     $scope.closeStory = function(id) {
         store.dispatch({type: 'UI:STORY:CLOSE', id})
+    }
+    $scope.editStory = function(id) {
+        store.dispatch({type: 'UI:STORY:EDIT', id})
+    }
+    $scope.stopEditStory = function(id) {
+        store.dispatch({type: 'UI:STORY:STOP_EDIT', id})
     }
     $scope.onTodoMove = function(todoId,index) {
         store.dispatch({type: 'STORY:TODO:MOVE', id:$scope.story.id, todoId, index, sync:true})
@@ -46,16 +55,6 @@ export function StoryController($scope, $modal, store, uuid) {
     }
     $scope.cloneTodo = function(todo, index) {
         $scope.addTodo(todo.title, index)
-    }
-
-    $scope.openModal = function() {
-        if($scope.inModal) return
-        $modal.open({
-            template: require('./story.html'),
-            controller: StoryController,
-            scope: $scope,
-            size: 'lg'
-        })
     }
 
     $scope.$watch('story', story => {

@@ -1,5 +1,9 @@
 export function BoardController($scope, store, $timeout, uuid) {
 
+    window.socket = io('http://localhost:4042', {
+        query: 'token='+localStorage.getItem('waf.token')
+    });
+
     $scope.$on('$destroy', store.subscribe(() => {
         $scope.state = store.getState()
         $timeout(angular.noop,0)

@@ -1,4 +1,4 @@
-export function ColumnController($scope, store) {
+export function ColumnController($scope, store, uuid, $timeout) {
     $scope.$on('$destroy', store.subscribe(() => {
         $scope.state = store.getState()
     }))
@@ -23,9 +23,16 @@ export function ColumnController($scope, store) {
         return type[0] == "story"
     }
 
+    $scope.addStory = function() {
+        var id = uuid('story')
+        store.dispatch({type: 'STORY:CREATE', id, object: {id, title: 'New Story', todos: [], size:0}, sync: true})
+        store.dispatch({type: 'COLUMN:STORY:ADD', id:$scope.column.id, index: $scope.column.stories.length, storyId: id, sync: true})
+        store.dispatch({type: 'UI:STORY:EDIT', id})
+    }
+
     $scope.$watch('column', column => {
         if(column) {
-            // didn't finish, I wanted to count the sum of points
+            // count the sum of points
         }
     })
 }

@@ -10,7 +10,7 @@
                     <span class="board-menu-icon">
                         <i class="fa fa-check" ng-if="action.sync && !action.from_network"></i>
                         <i class="fa fa-circle-o-notch fa-spin" ng-if="!action.sync && !action.from_network"></i>
-                        <i class="fa fa-bluetooth-b" ng-if="action.from_network"></i>
+                        <img ng-src="{{action.object.from.avatar_url}}" width='20px' ng-if="action.from_network"/>
                     </span>
                     <small>{{ action.object.type }}</small>
                 </div>

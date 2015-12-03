@@ -102,6 +102,25 @@ export function reducer(state = INIT_STATE, action) {
                 }
             )
 
+        case 'STORY:TODO:UPDATE':
+            checkStory(state, action.id)
+
+            return _.merge({},
+                state,
+                {
+                    items: {
+                        [action.id]: {
+                            todos: _.map(state.items[action.id].todos, todo => {
+                                if(todo.id == action.todoId) {
+                                    return _.merge({}, todo, action.object)
+                                }
+                                return todo
+                            })
+                        }
+                    }
+                }
+            )
+
         case 'STORY:TODO:CHECK':
             checkStory(state, action.id)
 
