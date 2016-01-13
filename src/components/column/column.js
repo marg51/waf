@@ -7,8 +7,8 @@ export function ColumnController($scope, store, uuid, $timeout) {
     $scope.onInsert = function(storyId, index, metadata) {
         if(metadata[1].id !== $scope.column.id) {
             store.dispatch({type: "//GROUP", items: [
-                    {type: 'COLUMN:STORY:ADD', id: $scope.column.id, index, storyId},
-                    {type: 'COLUMN:STORY:REMOVE', id: metadata[1].id, storyId}
+                    {type: 'COLUMN:STORY:REMOVE', id: metadata[1].id, storyId},
+                    {type: 'COLUMN:STORY:ADD', id: $scope.column.id, index, storyId}
                 ]
                 , sync: true
                 , name: "STORY:COLUMN:CHANGE"
@@ -28,6 +28,10 @@ export function ColumnController($scope, store, uuid, $timeout) {
         store.dispatch({type: 'STORY:CREATE', id, object: {id, title: 'New Story', todos: [], size:0}, sync: true})
         store.dispatch({type: 'COLUMN:STORY:ADD', id:$scope.column.id, index: $scope.column.stories.length, storyId: id, sync: true})
         store.dispatch({type: 'UI:STORY:EDIT', id})
+    }
+
+    $scope.updateColumn = function(object) {
+        store.dispatch({type: 'COLUMN:UPDATE', id:$scope.column.id, object, sync: true})
     }
 
     $scope.$watch('column', column => {

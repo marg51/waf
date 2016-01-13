@@ -7,6 +7,10 @@ export function StoryController($scope, store, uuid) {
     $scope.updateStory = function(object) {
         store.dispatch({type: 'STORY:UPDATE', id:$scope.story.id, object, sync:true})
     }
+    $scope.removeStory = function(id) {
+        store.dispatch({type: 'COLUMN:STORY:REMOVE', storyId: id, sync: true})
+        store.dispatch({type: 'STORY:REMOVE', id, sync: true})
+    }
 
     $scope.toggleTodo = function(todoId, value) {
         if(value) {
@@ -31,6 +35,13 @@ export function StoryController($scope, store, uuid) {
     }
     $scope.closeStory = function(id) {
         store.dispatch({type: 'UI:STORY:CLOSE', id})
+    }
+    $scope.toggleOpenStory = function(id) {
+        if($scope.state.ui.stories[id] && $scope.state.ui.stories[id].open) {
+            $scope.closeStory(id)
+        } else {
+            $scope.openStory(id)
+        }
     }
     $scope.editStory = function(id) {
         store.dispatch({type: 'UI:STORY:EDIT', id})

@@ -12,6 +12,10 @@ export function reducer(state = INIT_STATE, action) {
     switch(action.type) {
         case '//init/state':
             return action.state.stories
+        case 'STORY:REMOVE':
+            delete state.items[action.id]
+
+            return _.merge({}, state)
         case 'STORY:CREATE':
             return _.merge({},
                 state,

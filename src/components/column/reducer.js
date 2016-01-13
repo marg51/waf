@@ -23,15 +23,17 @@ export function reducer(state = INIT_STATE, action) {
                 }
             })
         case 'COLUMN:STORY:REMOVE':
-            checkColumn(state, action.id)
 
-            state.items[action.id].stories.splice(state.items[action.id].stories.indexOf(action.storyId),1)
             return _.merge({}, state, {
-                items: {
-                    [action.id]: {
-                        stories: [...state.items[action.id].stories]
+                items: _.mapValues(state.items, column => {
+                    var index;
+                    if( (index = column.stories.indexOf(action.storyId)) !=-1) {
+                        column.stories.splice(index,1)
+
+                        return _.merge({}, column)
                     }
-                }
+                    return column
+                })
             })
 
         case 'COLUMN:STORY:MOVE':

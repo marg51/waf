@@ -1,7 +1,8 @@
 require('./auth')
 
 var fs = require('fs')
-var config = require('./config')
+import {config} from './config'
+console.log(config)
 
 global._ = require('lodash')
 

@@ -10,12 +10,12 @@ export function BoardController($scope, store, $timeout, uuid) {
     }))
 
     socket.emit('state', function(){});
-      socket.on('state', function(state){
-        store.dispatch({type: '//init/state', state})
-      });
-      socket.on('dispatch', function(action){
-        store.dispatch(action)
-      });
+    socket.on('state', function(state){
+      store.dispatch({type: '//init/state', state})
+    });
+    socket.on('dispatch', function(action){
+      store.dispatch(action)
+    });
     socket.on('connect', () => {
         store.dispatch({type: 'UI:SOCKET:CONNECTED'})
     })

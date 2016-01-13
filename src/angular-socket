@@ -1,0 +1,20 @@
+app.module('socket', [])
+   .factory('socket', ($scope, store) => {
+        window.socket = io('http://localhost:4042', {
+            query: 'token='+localStorage.getItem('waf.token')
+        });
+
+        socket.on('connect', () => {
+            store.dispatch({type: 'UI:SOCKET:CONNECTED'})
+        })
+        socket.on('disconnect', () => {
+            store.dispatch({type: 'UI:SOCKET:DISCONNECTED'})
+        })
+
+        return {
+            on(a,b,c) => {return socket.on(a,b,c)},
+            emit(a,b,c) => {return socket.emit(a,b,c)}
+        }
+   })
+
+

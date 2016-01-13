@@ -9,19 +9,33 @@ function AppConfig($stateProvider, $urlRouterProvider, $locationProvider) {
     $locationProvider.html5Mode(true);
     $urlRouterProvider.otherwise('/');
 
-    $stateProvider.state('main', {
+    $stateProvider.state('board', {
         url: '/',
-        template: "<board/>"
+        template: "<board/>",
+        resolve: {
+            token: function($q, $state){
+                if(localStorage.getItem('waf.token'))
+                    return $q.when(localStorage.getItem('waf.token'))
+                else {
+                    alert('please login')
+                    return $q.reject('Not logged in')
+                }
+            }
+        }
     })
 
     $stateProvider.state('login', {
         url: '/login?code',
-        template: "<login/>",
-        controller: function($location, $stateParams, $http) {
+        template: "<span promise='promise'></span><span ng-if='promise.isLoading'>Logging in, please wait …</span><span ng-if='promise.isLoaded'>Logged in! <a ui-sref='board'>Go to main page</a></span><span ng-if='promise.hasError'>Sorry, login failed</span>",
+        reloadOnSearch: false,
+        controller: function($scope, $location, $stateParams, $http, $state) {
             var code = $stateParams.code;
             $location.search('code','github')
 
-            $http.get('/auth/github?code='+code)
+            $scope.promise = $http.get('/auth/github?code='+code).then(function(data) {
+                localStorage.setItem("waf.token", data.data)
+                $state.go('board')
+            })
         }
     })
 }
@@ -117,19 +131,23 @@ app.factory('uuid', function() {
         return type+'_'+uuid.v4()
     }
 })
-  window.socket = io('http://localhost:4042');
 
-  app.factory('socket', ($rootScope) => {
+app.directive('marked', function($timeout) {
     return {
-        emit(name, data, callback) {
-            $rootScope.$apply(() => {
-                socket.emit(name, data, callback)
-            })
+        scope: {
+            marked: '=',
+            opts: '='
         },
-        on(name, callback) {
-            $rootScope.$apply(() => {
-                socket.on(name, callback)
-            })
+        link: (scope, elm, attrs) => {
+            scope.$watch('marked', function(){scope.apply()})
+            scope.$watch('opts', function(){scope.apply()})
+
+            scope.apply = () => {
+                elm.html(marked(scope.marked, scope.opts))
+            }
+
+            scope.apply()
         }
     }
-  })
+})
+
