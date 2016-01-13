@@ -1,27 +1,116 @@
-story {
+.story-element {
+    position: relative;
     display: inline-block;
     margin: 2px 0;
     border: 1px solid #DDD;
     border-radius: 4px;
-    padding: 5px;
+    padding: 0;
     background: white;
     box-shadow: 2px 2px 2px rgba(0,0,0,0.1);
     width: 100%;
-
-    &.updating {
-        border-style: dashed;
-        opacity: 0.5;
+    min-height: 50px;
+    cursor: move;
+    [dnd-nodrag] {
+        cursor: default;
     }
+    .story-header {
+        padding: 5px;
+    }
+    .story-infos {
+        margin: -5px;
+        padding: 3px;
+        border-left: 1px solid #F1F1F1;
+        height: 48px;
+        width: 50px;
+        text-align: center;
+        font-size: 1.1em;
+
+        .story-size {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            background: #14425e;
+            color: white;
+            input {
+                color: #14425e;
+                width: 23px;
+                padding: 0;
+            }
+        }
+    }
+
+    .story-extended {
+        margin-top: 20px;
+        min-height: 50px;
+        padding: 10px 5px;
+        h4 {
+            text-align: center;
+        }
+        .todo-list {
+            border-top: 1px solid #14425e;
+            border-bottom: 1px solid #14425e;
+            margin-bottom: 10px;
+            padding: 10px 0px;
+
+            .todo {
+                position: relative;
+                border-bottom: #F1F1F1;
+                height: 30px;
+                font-size: 10px;
+                line-height: 30px;
+                input {
+                    margin-right: 5px;
+                }
+                .todo-edit-title {
+                    min-width: 300px;
+                }
+
+                i.inactive {
+                    opacity: 0.2;
+                }
+                .todo-actions {
+                    position: absolute;
+                    background: white;
+                    display: none;
+                    top: 0;
+                    right: 0;
+                    height: 30px;
+                }
+                .todo-actions-hover {
+                    float: right;
+                    &:hover {
+                        .todo-actions {
+                            display: block;
+                        }
+                    }
+                }
+            }
+
+            .dndPlaceholder {
+                display: inline-block;
+                margin: 0;
+                border: 0px solid #DDD;
+                border-radius: 4px;
+                background: white;
+                width: 100%;
+                list-style: none;
+                height: 20px;
+            }
+        }
+
+    }
+    .handle {
+        cursor: move;
+        margin-right: 5px;
+        i {
+            margin-right: 2px;
+            font-size: 1.1em;
+        }
+    }
+
+
 }
 
-.dndPlaceholder {
-    display: inline-block;
-    margin: 2px 0;
-    border: 1px solid #DDD;
-    border-radius: 4px;
-    padding: 5px;
-    background: white;
-    box-shadow: 2px 2px 2px rgba(0,0,0,0.1);
-    width: 100%;
-    list-style: none;
+.dndDraggingSource {
+    display: none;
 }

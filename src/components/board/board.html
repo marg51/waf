@@ -1,10 +1,23 @@
-<div ng-init="promise = fetch()" promise="promise"></div>
-<button ng-click="promise = fetch()">refresh</button>
-
-<div ng-if="promise.isLoading"> Fetching data</div>
-<div ng-if="promise.hasError">Errrrooor</div>
-
-<div ng-if="promise.isLoaded" class="board-content">
-    <div ng-if="stories.length == 0">No Story yet, <button ng-click="openEditor()">create one</button></div>
-    <column ng-repeat="column in config.tags.column.items" stories="columns[column]"/>
+<div class="board-content">
+    <div class="board-menu">
+        <div class="board-menu-row"> <span class="board-menu-icon"><i class="fa fa-history"></i></span> History </div>
+        <div class="board-menu-row">
+            <span class="board-menu-icon" ng-class="{'no-network': !state.ui.socket_connected}"><i class="fa fa-wifi"></i></span>
+        </div>
+        <div class="board-history">
+            <div ng-repeat="action in state.history">
+                <div class="board-menu-row">
+                    <span class="board-menu-icon">
+                        <i class="fa fa-check" ng-if="action.sync && !action.from_network"></i>
+                        <i class="fa fa-circle-o-notch fa-spin" ng-if="!action.sync && !action.from_network"></i>
+                        *<img ng-src="{{action.object.from.avatar_url}}" width='20px' ng-if="action.from_network"/>
+                    </span>
+                    <small>{{ action.object.type }}</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div ng-repeat="columnId in state.board.columns" column="state.columns.items[columnId]"></div>
+    <column-create on-save="addColumn(column)" ng-if="__.addColumn"></column-create>
+    <button class="btn btn-default" ng-click="__.addColumn = !__.addColumn" class="pull-right">+ column</button>
 </div>

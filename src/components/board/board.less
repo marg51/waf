@@ -1,5 +1,42 @@
 board {
     .board-content {
         display: flex;
+        height: 100vh;
     }
+    .board-menu {
+        min-width: 30px;
+        width: 30px;
+        background: #14425e;
+        color: white;
+        overflow: hidden;
+        .board-history {
+            display: flex;
+            flex-direction: column-reverse;
+        }
+
+        .board-menu-icon {
+            display: inline-block;
+            width: 30px;
+            text-align: center;
+        }
+        .board-menu-row {
+            white-space: nowrap;
+        }
+
+        .no-network {
+         -webkit-animation: pulsate 1s ease-out;
+         -webkit-animation-iteration-count: infinite;
+         color: #ff7163;
+        }
+
+        &:hover {
+            min-width: 200px;
+        }
+    }
+}
+
+@-webkit-keyframes pulsate {
+    0% {-webkit-transform: scale(0.1, 0.1); opacity: 0.0;}
+    50% {opacity: 1.0;}
+    100% {-webkit-transform: scale(1.2, 1.2); opacity: 0.0;}
 }

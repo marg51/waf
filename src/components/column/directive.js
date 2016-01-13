@@ -3,8 +3,17 @@ export function column() {
     return {
         template: require('./column.html'),
         scope: {
-            stories:'='
+            column:'='
         },
         controller: ColumnController
+    }
+}
+
+export function createColumn() {
+    return {
+        template: require('./create.html'),
+        scope: {
+            onSave: '&'
+        }
     }
 }

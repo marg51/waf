@@ -1,4 +1,8 @@
-<div class="column-title">{{$parent.column}}</div>
-<div dnd-list="stories" dnd-inserted="onInsert(item,index,external)" class="column-content">
-    <story ng-repeat="story in stories" dnd-draggable="story" dnd-moved="stories.splice($index,1)" ng-class="{updating: story.promise.isLoading}" dnd-effect-allowed="copyMove" />
-</story>
+<div class="column-title"><input ng-model="column.name" ng-change="updateColumn({name: column.name})"  ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 2500, 'blur': 0 } }"/></div>
+<div dnd-list="[]" dnd-inserted="onInsert(item,index,type)" class="column-content" dnd-dragover="dragoverCallback(event, index, external, type)">
+    <div class="column-add-story" ng-if="!(column.stories.length > 0)">Drag a story here or </div>
+    <div ng-repeat="storyId in column.stories" story="state.stories.items[storyId]" dnd-draggable="storyId" dnd-type="['story',column]"/>
+</div>
+<div class="column-add-story" ng-click="addStory()">
+    Add a story
+</div>

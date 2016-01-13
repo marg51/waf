@@ -1,10 +1,12 @@
-column {
+[column], column-create {
+    overflow: auto;
     .column-title {
         font-size: 1.2em;
         background: white;
         text-align: center;
         padding: 10px;
         margin-bottom: 10px;
+        height: 50px;
     }
     background: #F1F1F1;
     padding: 7px;
@@ -14,5 +16,29 @@ column {
 
     .column-content {
         min-height: 200px;
+
+        .dndPlaceholder {
+            display: inline-block;
+            margin: 2px 0;
+            border: 1px solid #DDD;
+            border-radius: 4px;
+            padding: 5px;
+            background: white;
+            box-shadow: 2px 2px 2px rgba(0,0,0,0.1);
+            width: 100%;
+            list-style: none;
+            height: 50px;
+        }
+    }
+
+    .column-add-story {
+        margin-top: 10px;
+        text-align: center;
+        font-size: 1.3em;
+        text-shadow: 1px 1px 0px white;
+    }
+
+    .story-element {
+        margin-bottom: 10px;
     }
 }

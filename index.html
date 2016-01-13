@@ -10,18 +10,18 @@
 
         <base href='/'></base>
 
+        <script src="/io/socket.io/socket.io.js"></script>
         <script src="/dist/deps.js?barthash=3c3a5e3"></script>
         <script src="/dist/bundle.js?barthash=3c3a5e3"></script>
 
         <link rel="stylesheet" type="text/css" href="/dist/bootstrap.css">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 
     </head>
 
     <body>
-        <div>
-            <board repo='marg51/testing-git-webhook'/>
-        </div>
+        <a href="https://github.com/login/oauth/authorize?client_id=8d57891975e4f895c94e&redirect_uri=http%3A%2F%2Flocalhost%3A4041%2Flogin">Login</a>
+        <ui-view/>
     </body>
 
 </html>
