@@ -22,11 +22,26 @@
 
             </div>
             <span>{{story.checked_todo}}/{{story.todos.length}}</span>
+            <div class="clearfix">
+                <div ng-class="{'pull-left': !state.ui.stories[story.id].edit}">
+                    <span ng-if="state.ui.stories[story.id].edit || story.priority == MUST" ng-class="{active: story.priority == MUST}" class="label-priority label label-danger" ng-click="updateStory({priority: MUST})">MUST</span>
+                    <span ng-if="state.ui.stories[story.id].edit || story.priority == SHOULD" ng-class="{active: story.priority == SHOULD}" class="label-priority label label-warning" ng-click="updateStory({priority: SHOULD})">SHOULD</span>
+                    <span ng-if="state.ui.stories[story.id].edit || story.priority == COULD" ng-class="{active: story.priority == COULD}" class="label-priority label label-primary" ng-click="updateStory({priority: COULD})">COULD</span>
+                    <span ng-if="state.ui.stories[story.id].edit || story.priority == WOULD" ng-class="{active: story.priority == WOULD}" class="label-priority label label-info" ng-click="updateStory({priority: WOULD})">WOULD</span>
+                    <span ng-if="state.ui.stories[story.id].edit"  ng-class="{active: !story.priority}" class="label-priority label label-default" ng-click="updateStory({priority: 0})"> - </span>
+                </div>
+                <div>
+                    <span ng-if="state.ui.stories[story.id].edit || story.teams.frontend" ng-class="{active: story.teams.frontend}" class="label-priority label label-danger" ng-click="updateStory({teams:{frontend: !story.teams.frontend}})">Frontend</span>
+                    <span ng-if="state.ui.stories[story.id].edit || story.teams.backend" ng-class="{active: story.teams.backend}" class="label-priority label label-success" ng-click="updateStory({teams:{backend: !story.teams.backend}})">Backend</span>
+                    <span ng-if="state.ui.stories[story.id].edit || story.teams.design" ng-class="{active: story.teams.design}" class="label-priority label label-primary" ng-click="updateStory({teams:{design: !story.teams.design}})">Design</span>
+                </div>
+            </div>
+
         </div>
     </header>
     <div ng-if="state.ui.stories[story.id].open" class="story-extended" dnd-nodrag>
         <div ng-if="story.description && !state.ui.stories[story.id].edit" class="todo-description">
-            <em marked="story.description"></em>
+            <span marked="story.description"></span>
         </div>
         <div ng-if="state.ui.stories[story.id].edit">
             <textarea class="form-control" ng-model="story.description" ng-change="updateStory({description: story.description})" ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 2500, 'blur': 0 } }"></textarea>

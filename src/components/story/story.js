@@ -1,4 +1,13 @@
 export function StoryController($scope, store, uuid) {
+    $scope.MUST = 5
+    $scope.SHOULD = 4
+    $scope.COULD = 3
+    $scope.WOULD = 2
+
+    $scope.FRONTEND = 1
+    $scope.BACKEND = 2
+    $scope.DESIGN = 3
+
     $scope.$on('$destroy', store.subscribe(() => {
         $scope.state = store.getState()
     }))

@@ -146,7 +146,7 @@ app.directive('marked', function($timeout) {
             scope.$watch('opts', function(){scope.apply()})
 
             scope.apply = () => {
-                elm.html(marked(scope.marked, scope.opts))
+                elm.html(marked(scope.marked, _.merge({gfm:true, breaks: true},scope.opts)))
             }
 
             scope.apply()

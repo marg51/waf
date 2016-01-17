@@ -25,7 +25,7 @@ export function ColumnController($scope, store, uuid, $timeout) {
 
     $scope.addStory = function() {
         var id = uuid('story')
-        store.dispatch({type: 'STORY:CREATE', id, object: {id, title: 'New Story', todos: [], size:0}, sync: true})
+        store.dispatch({type: 'STORY:CREATE', id, object: {id, title: 'New Story', todos: [], size:0, priority: null, teams: {}}, sync: true})
         store.dispatch({type: 'COLUMN:STORY:ADD', id:$scope.column.id, index: $scope.column.stories.length, storyId: id, sync: true})
         store.dispatch({type: 'UI:STORY:EDIT', id})
     }
