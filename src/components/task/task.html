@@ -1,0 +1,24 @@
+<div>
+    <span class="handle pull-left">
+        <i class="fa fa-ellipsis-v"></i><i class="fa fa-ellipsis-v"></i>
+    </span>
+    <div dnd-nodrag>
+        <label>
+            <input type="checkbox" ng-model="task.checked" ng-click="toggleTodo(task.id, task.checked)"/>
+            <span ng-if="!edit">
+                {{task.title}}
+            </span>
+        </label>
+        <span ng-if="edit">
+            <input ng-model="task.title" class="todo-edit-title" ng-change="updateTodo(task.id, {title: task.title})"  ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 2500, 'blur': 0 } }"/>
+        </span>
+
+        <span class="todo-actions-hover">
+            <i class="fa fa-info-circle"></i>
+            <span class="todo-actions">
+                <span ng-click="onRemove({id:task.id})" class="pull-right"><i class="fa fa-times"></i></span>
+                <span ng-click="onClone({task:task})" class="todo-kind pull-right"><i class="fa fa-clone"></i></span>
+            </span>
+        </span>
+    </div>
+</div>

@@ -32,7 +32,7 @@ io.on('connection', function (socket) {
   console.log('hello! ', socket.decoded_token);
 
   socket.on('state', function (data) {
-    socket.emit('state', _.pick(store.getState(), ["stories", "columns", "board"]));
+    socket.emit('state', _.pick(store.getState(), ["stories", "columns", "board", "tasks"]));
   });
 
   socket.on('dispatch', function(action, callback) {

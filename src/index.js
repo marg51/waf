@@ -55,7 +55,8 @@ import {init as storyInit} from './components/story/'
 storyInit(app)
 import {init as columnInit} from './components/column/'
 columnInit(app)
-
+import {init as taskInit} from './components/task/'
+taskInit(app)
 
 import {combineReducers} from 'redux'
 import {newStore} from './store'
@@ -63,6 +64,7 @@ import {newStore} from './store'
 import {reducer as stories} from './components/story/reducer'
 import {reducer as board} from './components/board/reducer'
 import {reducer as columns} from './components/column/reducer'
+import {reducer as tasks} from './components/task/reducer'
 import {reducer as ui} from './reducer'
 
 export const store = newStore(combineReducers({
@@ -70,6 +72,7 @@ export const store = newStore(combineReducers({
     board,
     columns,
     ui,
+    tasks,
     history: (state = [], action) => {
         if(action.type == "HISTORY:SYNC") {
             return _.map(state, history => {
