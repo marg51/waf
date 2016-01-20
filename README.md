@@ -8,15 +8,38 @@ Inspiration: waffle.io
 
 ### install
 
-Update your nginx conf. There is a template included, **you'll have to change two paths** in the template.
+#### Nginx
 
+There is a template included, **you'll have to change two paths** in the template.
 
-- **Debian (& ubunto)** the nginx.conf should be located at `/etc/nginx/sites-enabled/waf.conf`
+- **Debian (& ubuntu)** the nginx.conf should be located at `/etc/nginx/sites-enabled/waf.conf`
 
 - **mac (homebrew)**: `/usr/local/etc/nginx/sites-enabled/waf.conf`
 
+Don't forget to update the template, instructions are included
 
+Reload nginx: `sudo nginx -s reload`
+
+
+#### Github integration
+
+It uses github login, you'll have to add some tokens:
+
+
+create a file at `/server/config.js`
+
+```javascript
+export const config = {
+    client_id: "FROM GITHUB APP",
+    client_secret: "FROM GITHUB",
+    redirect_uri: "http://localhost:4041/login",
+    secret: "CANBEANYTHING$$$$"
+}
 ```
+
+#### run
+
+``` bash
 npm install
 npm start
 ```
