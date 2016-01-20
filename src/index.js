@@ -57,6 +57,8 @@ import {init as columnInit} from './components/column/'
 columnInit(app)
 import {init as taskInit} from './components/task/'
 taskInit(app)
+import {init as shortcutsInit} from './shortcuts'
+shortcutsInit(app)
 
 import {combineReducers} from 'redux'
 import {newStore} from './store'
@@ -132,6 +134,19 @@ var uuid = require('node-uuid')
 app.factory('uuid', function() {
     return function(type) {
         return type+'_'+uuid.v4()
+    }
+})
+
+app.directive('input', function() {
+    return {
+        restrict: 'E',
+        link: (scope, elm) => {
+            elm.on('keydown', function(event) {
+                if(event.keyCode == 27) {
+                    elm[0].blur()
+                }
+            })
+        }
     }
 })
 

@@ -67,6 +67,15 @@ export function StoryController($scope, store, uuid) {
         $scope.addTodo(todo.title, index)
     }
 
+    $scope.select = function() {
+        store.dispatch({type: "UI:STORY:SELECT", story: {
+            id: $scope.story.id,
+            column_id: $scope.$parent.column.id,
+            row: $scope.state.columns.items[$scope.$parent.column.id].stories.indexOf($scope.story.id),
+            column: $scope.state.board.columns.indexOf($scope.$parent.column.id)
+        }})
+    }
+
     $scope.$watch('state.tasks', () => {
         $scope.story.checked_todo = _.filter($scope.story.todos, todoId => $scope.state.tasks.items[todoId].checked).length
     })
