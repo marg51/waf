@@ -9,10 +9,20 @@ const STORY_SIZE_DOWN = "cmd+down"
 const STORY_OPEN = "enter"
 const STORY_CLOSE = "esc"
 
+export function bind(keys, fn, event) {
+    Mousetrap.bind(keys, fn, event)
+
+    return () => {
+        return Mousetrap.unbind(keys)
+    }
+}
+
+
 export function init(app) {
     app.run(function(store) {
+
         // that's free of charge
-        var __ = Mousetrap.bind
+        var __ = bind
 
         function getSelectedStory() {
             return store.getState().ui.selected_story

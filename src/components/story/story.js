@@ -1,3 +1,5 @@
+import {bind} from '../../shortcuts'
+
 export function StoryController($scope, store, uuid) {
     $scope.MUST = 5
     $scope.SHOULD = 4
@@ -79,4 +81,53 @@ export function StoryController($scope, store, uuid) {
     $scope.$watch('state.tasks', () => {
         $scope.story.checked_todo = _.filter($scope.story.todos, todoId => $scope.state.tasks.items[todoId].checked).length
     })
+
+
+    var unbindFns = []
+    $scope.$watch('state.ui.selected_story.id', (storyId, oldStoryId) => {
+        if(storyId == $scope.story.id) {
+            $scope.bindTodos()
+        } else if(oldStoryId == $scope.story.id) {
+            $scope.unbindTodos()
+        }
+    })
+    $scope.$watch('story.todos', () => {
+        if ($scope.state.ui.selected_story && $scope.state.ui.selected_story.id == $scope.story.id) {
+            $scope.unbindTodos()
+        }
+    })
+
+    $scope.unbindTodos = function() {
+        $scope.bindList = {}
+        _.map(unbindFns, (e)=>e())
+    }
+
+    $scope.bindTodos = function() {
+        $scope.unbindTodos()
+
+        var list = "abcdefghiklmnopqrstuvwxyz".split('')
+
+        _.map($scope.story.todos, (todo, index) => {
+            if($scope.story.todos.length>list.length) {
+                var bindSeq = list[Math.floor(index/list.length)]+" "+list[index%list.length]
+            }
+            else {
+                bindSeq = list[index]
+            }
+
+            $scope.bindList[todo]="t "+bindSeq
+
+            unbindFns.push(
+                bind("t "+bindSeq+ " c", () => {
+                    store.dispatch({type: 'TODO:UPDATE', id:todo, todo: {checked: true}})
+                })
+            )
+
+            unbindFns.push(
+                bind("t "+bindSeq+ " u", () => {
+                    store.dispatch({type: 'TODO:UPDATE', id:todo, todo: {checked: false}})
+                })
+            )
+        })
+    }
 }
