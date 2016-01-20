@@ -94,6 +94,7 @@ export function StoryController($scope, store, uuid) {
     $scope.$watch('story.todos', () => {
         if ($scope.state.ui.selected_story && $scope.state.ui.selected_story.id == $scope.story.id) {
             $scope.unbindTodos()
+            $scope.bindTodos()
         }
     })
 
