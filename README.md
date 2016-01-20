@@ -26,7 +26,7 @@ Reload nginx: `sudo nginx -s reload`
 It uses github login, you'll have to add some tokens:
 
 
-create a file at `/server/config.js`
+create a new file `./server/config.js`
 
 ```javascript
 export const config = {
