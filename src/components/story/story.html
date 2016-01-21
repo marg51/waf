@@ -17,7 +17,8 @@
                     <input
                         ng-model="story.title"
                         ng-change="updateStory({title: story.title})"
-                        ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 500, 'blur': 0 } }"/>
+                        ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 500, 'blur': 0 } }"
+                        autofocus/>
                     <span ng-click="toggleOpenStory(story.id)" class="btn-link pull-right">close</span>
                 </span>
                 <div>

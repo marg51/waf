@@ -28,7 +28,7 @@ export function ColumnController($scope, store, uuid, $timeout) {
         store.dispatch(storyActions.add({id}))
         store.dispatch(columnActions.addStory({id: $scope.column.id, storyId:id}))
 
-        store.dispatch({type: 'UI:STORY:EDIT', id})
+        store.dispatch({type: 'UI:STORY:OPEN', id})
     }
 
     $scope.updateColumn = function(column) {
