@@ -1,3 +1,4 @@
+import * as _ from 'lodash'
 export const INIT_STATE = {
     items: {}
 }
@@ -15,10 +16,16 @@ export function reducer(state = INIT_STATE, action) {
         case 'COLUMN:STORY:ADD':
             checkColumn(state, action.id)
 
+            if(typeof action.index == "undefined") {
+                state.items[action.id].stories.push(action.storyId)
+            } else {
+                state.items[action.id].stories.splice(action.index, 0, action.storyId)
+            }
+
             return _.merge({}, state, {
                 items: {
                     [action.id]: {
-                        stories: [...state.items[action.id].stories.slice(0,action.index), action.storyId, ...state.items[action.id].stories.slice(action.index)]
+                        stories: [...state.items[action.id].stories]
                     }
                 }
             })

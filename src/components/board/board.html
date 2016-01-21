@@ -1,6 +1,7 @@
 <div class="board-content">
     <div class="board-menu">
-        <div class="board-menu-row"> <span class="board-menu-icon"><i class="fa fa-history"></i></span> History </div>
+        <div class="board-menu-row"> <span class="board-menu-icon" ng-click="addColumn()"><i class="fa fa-plus-square-o fa-2x"></i></span> History </div>
+        <br />
         <div class="board-menu-row">
             <span class="board-menu-icon" ng-class="{'no-network': !state.ui.socket_connected}"><i class="fa fa-wifi"></i></span>
         </div>
@@ -17,7 +18,11 @@
             </div>
         </div>
     </div>
-    <div ng-repeat="columnId in state.board.columns" column="state.columns.items[columnId]"></div>
-    <column-create on-save="addColumn(column)" ng-if="__.addColumn"></column-create>
-    <button class="btn btn-default" ng-click="__.addColumn = !__.addColumn" class="pull-right">+ column</button>
+
+
+    <div
+        ng-repeat="columnId in state.board.columns"
+        column="state.columns.items[columnId]"
+        on-remove="removeColumn(columnId)">
+    </div>
 </div>

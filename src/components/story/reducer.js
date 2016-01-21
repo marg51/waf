@@ -1,3 +1,5 @@
+import * as _ from 'lodash'
+
 export const INIT_STATE = {
     items: {}
 }
@@ -39,6 +41,7 @@ export function reducer(state = INIT_STATE, action) {
             )
 
         case 'STORY:CHANGE_SIZE':
+            console.warn("[deprecated] STORY:CHANGE_SIZE, use STORY:UPDATE instead")
             checkStory(state, action.id)
 
             return _.merge({},
@@ -58,7 +61,8 @@ export function reducer(state = INIT_STATE, action) {
 
             if(index == -1) return state
 
-            // yeah, that's normal
+            // bc the d&d count the new position with the previous elm still at its original place
+            // so we actually have to remove 1 to account for that
             if(index < action.index)
                 action.index--
 

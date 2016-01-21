@@ -1,7 +1,7 @@
 {
-  "name": "bart",
+  "name": "waf",
   "version": "0.0.1",
-  "description": "bart app",
+  "description": "waf",
   "main": "dist/app.js",
   "dependencies": {
     "angular": "1.5.0-rc.0",
@@ -11,12 +11,13 @@
     "babel": "^6.3.26",
     "babel-loader": "^5.1.2",
     "browserify": "^10.2.3",
+    "chai": "^3.4.1",
     "css-loader": "^0.12.1",
-    "http-server": "^0.8.5",
     "less": "^2.5.0",
     "less-loader": "^2.2.0",
     "lodash": "^3.8.0",
     "marked": "^0.3.5",
+    "mocha": "^2.3.4",
     "moment": "^2.10.3",
     "mousetrap": "^1.5.3",
     "ng-annotate-loader": "0.0.2",
@@ -37,7 +38,9 @@
     "minify": "uglifyjs --compress -o dist/bundle.js dist/bundle.js",
     "prod": "npm run build && npm run minify && npm run minify_deps",
     "deploy": "scp -r dist/ 178.170.115.158:tz/frontend/",
-    "start": "npm run build && cd server && babel-node index.js"
+    "start": "npm run build && cd server && babel-node index.js",
+    "test": "mocha --compilers js:babel-core/register --recursive src/components/*/*.spec.js",
+    "test:watch": "mocha --compilers js:babel-core/register -w --recursive src/components/*/*.spec.js"
   },
   "repository": {
     "type": "git",
