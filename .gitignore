@@ -1,1 +1,6 @@
 server/config.js
+dist/
+node_modules/
+npm-debug.log
+server/4.0.0
+server/npm-debug.log
