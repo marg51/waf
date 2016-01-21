@@ -56,6 +56,8 @@
                     class="todo"
                     dnd-draggable="todoId"
                     dnd-type="['todo',story]">
+                    <span class="pull-left" ng-if="state.tasks.items[todoId].checked">{{bindList[todoId]}} u</span>
+                    <span class="pull-left" ng-if="!state.tasks.items[todoId].checked">{{bindList[todoId]}} c</span>
                     <div
                         task="state.tasks.items[todoId]"
                         edit="state.ui.stories[story.id].edit"
