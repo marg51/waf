@@ -9,6 +9,7 @@ const STORY_SIZE_DOWN = "cmd+down"
 const STORY_OPEN = "enter"
 const STORY_CLOSE = "esc"
 
+
 export function init(app) {
     app.run(function(store) {
         // that's free of charge
@@ -118,5 +119,62 @@ export function init(app) {
 
             store.dispatch({type: 'UI:STORY:CLOSE', id:story.id})
         })
+    })
+
+    app.factory('shortcuts', ($rootScope) => {
+        var list = {};
+        var letters = "abcdefghijklmnopqrstuvwxyz".split('')
+        var availables = {}
+
+        _.map(letters, (letter) => {
+            _.map(letters, (letter2) => {
+                var generated = {shortcut: letter+" "+letter2, action: null}
+                availables[generated.shortcut] = generated
+            })
+        })
+
+
+        var service = {
+            register(action, format="_") {
+                var without_actions = _.filter(availables, (shortcut) => !shortcut.action)
+
+                if(without_actions.length == 0) {
+                    throw new Error('no more shortcuts available')
+                }
+
+                without_actions[0].action = action
+
+                var shortcut = format.replace('_', without_actions[0].shortcut)
+
+                Mousetrap.bind(shortcut, () => {
+                    $rootScope.$apply(() => action())
+                })
+
+                return {
+                    unregister: () => service.unregister(shortcut),
+                    shortcut
+                }
+
+            }, unregister(shortcut) {
+                Mousetrap.unbind(shortcut)
+
+                availables[shortcut].action = null
+            }
+        }
+
+        return service
+    })
+
+    app.directive('shortcut', (shortcuts) => {
+        return {
+            template: "<span class='label label-default'>{{shortcut.shortcut}}</span>",
+            scope: {
+                onAction: '&shortcut'
+            }, link(scope) {
+                scope.shortcut = shortcuts.register(() => scope.onAction())
+
+                scope.$on('$destroy', scope.shortcut.unregister)
+            }
+        }
     })
 }
