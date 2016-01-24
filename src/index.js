@@ -24,6 +24,11 @@ function AppConfig($stateProvider, $urlRouterProvider, $locationProvider) {
         }
     })
 
+    $stateProvider.state('demo', {
+        url: '/demo',
+        template: "<demo/>"
+    })
+
     $stateProvider.state('login', {
         url: '/login?code',
         template: "<span promise='promise'></span><span ng-if='promise.isLoading'>Logging in, please wait …</span><span ng-if='promise.isLoaded'>Logged in! <a ui-sref='board'>Go to main page</a></span><span ng-if='promise.hasError'>Sorry, login failed</span>",
@@ -57,6 +62,8 @@ import {init as columnInit} from './components/column/'
 columnInit(app)
 import {init as taskInit} from './components/task/'
 taskInit(app)
+import {init as demoInit} from './components/demo/'
+demoInit(app)
 import {init as shortcutsInit} from './shortcuts'
 shortcutsInit(app)
 
