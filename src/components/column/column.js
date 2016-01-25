@@ -1,3 +1,6 @@
+import * as columnActions from './actions'
+import * as storyActions from '../story/actions'
+
 export function ColumnController($scope, store, uuid, $timeout) {
     $scope.$on('$destroy', store.subscribe(() => {
         $scope.state = store.getState()
@@ -5,17 +8,14 @@ export function ColumnController($scope, store, uuid, $timeout) {
     $scope.state = store.getState()
 
     $scope.onInsert = function(storyId, index, metadata) {
+        //  metadata comes from D&D lib and includes the column id
+        //  if the source' column's id is different, then we remove from the source colulb and add it to the current column
         if(metadata[1].id !== $scope.column.id) {
-            store.dispatch({type: "//GROUP", items: [
-                    {type: 'COLUMN:STORY:REMOVE', id: metadata[1].id, storyId},
-                    {type: 'COLUMN:STORY:ADD', id: $scope.column.id, index, storyId}
-                ]
-                , sync: true
-                , name: "STORY:COLUMN:CHANGE"
-            })
+            store.dispatch(columnActions.removeStory({id: metadata[1].id, storyId}))
+            store.dispatch(columnActions.addStory({id: $scope.column.id, storyId, index}))
         }
         else {
-            store.dispatch({type: 'COLUMN:STORY:MOVE', id: metadata[1].id, index, storyId, sync: true})
+            store.dispatch(columnActions.moveStory({id: $scope.column.id, storyId, index}))
         }
     }
 
@@ -25,13 +25,14 @@ export function ColumnController($scope, store, uuid, $timeout) {
 
     $scope.addStory = function() {
         var id = uuid('story')
-        store.dispatch({type: 'STORY:CREATE', id, object: {id, title: 'New Story', todos: [], size:0, priority: null, teams: {}}, sync: true})
-        store.dispatch({type: 'COLUMN:STORY:ADD', id:$scope.column.id, index: $scope.column.stories.length, storyId: id, sync: true})
-        store.dispatch({type: 'UI:STORY:EDIT', id})
+        store.dispatch(storyActions.add({id}))
+        store.dispatch(columnActions.addStory({id: $scope.column.id, storyId:id}))
+
+        store.dispatch({type: 'UI:STORY:OPEN', id})
     }
 
-    $scope.updateColumn = function(object) {
-        store.dispatch({type: 'COLUMN:UPDATE', id:$scope.column.id, object, sync: true})
+    $scope.updateColumn = function(column) {
+        store.dispatch(columnActions.update({id: $scope.column.id, column}))
     }
 
     $scope.$watch('column', column => {

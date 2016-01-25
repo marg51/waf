@@ -1,5 +1,6 @@
 export function reducer(state = {
     socket_connected: false,
+    selected_story: null,
     stories: {}
 }, action) {
     switch(action.type) {
@@ -15,6 +16,8 @@ export function reducer(state = {
             return _.merge({}, state, {stories: {[action.id]: {edit: true}}})
         case 'UI:STORY:STOP_EDIT':
             return _.merge({}, state, {stories: {[action.id]: {edit: false}}})
+        case 'UI:STORY:SELECT':
+            return _.merge({}, state, {selected_story: action.story})
     }
 
     return state

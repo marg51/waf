@@ -24,6 +24,11 @@ function AppConfig($stateProvider, $urlRouterProvider, $locationProvider) {
         }
     })
 
+    $stateProvider.state('demo', {
+        url: '/demo',
+        template: "<demo/>"
+    })
+
     $stateProvider.state('login', {
         url: '/login?code',
         template: "<span promise='promise'></span><span ng-if='promise.isLoading'>Logging in, please wait …</span><span ng-if='promise.isLoaded'>Logged in! <a ui-sref='board'>Go to main page</a></span><span ng-if='promise.hasError'>Sorry, login failed</span>",
@@ -57,6 +62,10 @@ import {init as columnInit} from './components/column/'
 columnInit(app)
 import {init as taskInit} from './components/task/'
 taskInit(app)
+import {init as demoInit} from './components/demo/'
+demoInit(app)
+import {init as shortcutsInit} from './shortcuts'
+shortcutsInit(app)
 
 import {combineReducers} from 'redux'
 import {newStore} from './store'
@@ -135,6 +144,19 @@ app.factory('uuid', function() {
     }
 })
 
+app.directive('input', function() {
+    return {
+        restrict: 'E',
+        link: (scope, elm) => {
+            elm.on('keydown', function(event) {
+                if(event.keyCode == 27) {
+                    elm[0].blur()
+                }
+            })
+        }
+    }
+})
+
 app.directive('marked', function($timeout) {
     return {
         scope: {
@@ -154,3 +176,14 @@ app.directive('marked', function($timeout) {
     }
 })
 
+// https://gist.github.com/mlynch/dd407b93ed288d499778
+app.directive('autofocus', ['$timeout', function($timeout) {
+  return {
+    restrict: 'A',
+    link : function($scope, $element) {
+      $timeout(function() {
+        $element[0].focus();
+      });
+    }
+  }
+}]);

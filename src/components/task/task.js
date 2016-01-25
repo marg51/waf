@@ -1,3 +1,5 @@
+import * as taskActions from './actions'
+
 export function TaskController($scope, store) {
     $scope.$on('$destroy', store.subscribe(() => {
         $scope.state = store.getState()
@@ -5,7 +7,7 @@ export function TaskController($scope, store) {
     $scope.state = store.getState()
 
     $scope.updateTodo = function(id, todo) {
-        store.dispatch({type: 'TODO:UPDATE', id, todo, sync:true})
+        store.dispatch(taskActions.update({id, todo}))
     }
 
     $scope.toggleTodo = function(id, value) {

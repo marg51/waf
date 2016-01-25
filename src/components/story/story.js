@@ -1,3 +1,6 @@
+import * as taskActions from '../task/actions'
+import * as storyActions from './actions'
+
 export function StoryController($scope, store, uuid) {
     $scope.MUST = 5
     $scope.SHOULD = 4
@@ -13,25 +16,33 @@ export function StoryController($scope, store, uuid) {
     }))
     $scope.state = store.getState()
 
-    $scope.updateStory = function(object) {
-        store.dispatch({type: 'STORY:UPDATE', id:$scope.story.id, object, sync:true})
+    $scope.updateStory = function(story) {
+        store.dispatch(
+            storyActions.update({id:$scope.story.id, story})
+        )
     }
     $scope.removeStory = function(id) {
         store.dispatch({type: 'COLUMN:STORY:REMOVE', storyId: id, sync: true})
-        store.dispatch({type: 'STORY:REMOVE', id, sync: true})
+        store.dispatch(
+            storyActions.remove({id})
+        )
     }
 
     // create a new todo and add it to the stories tasks
-    $scope.addTodo = function(todo, index) {
+    $scope.addTodo = function(title, index) {
         var id = uuid('todo')
-        store.dispatch({type: 'TODO:ADD', id, todo: {id, title:todo, checked:false}, sync: true})
-        store.dispatch({type: 'STORY:TODO:ADD', id:$scope.story.id, todoId:id, index, sync: true})
+        store.dispatch(
+            taskActions.add({id, title})
+        )
+        store.dispatch(
+            storyActions.addTask({id: $scope.story.id, index, todoId:id})
+        )
     }
 
     $scope.removeTodo = function(todoId) {
-        store.dispatch({type: 'STORY:TODO:REMOVE', id:$scope.story.id, todoId, sync:true})
+        store.dispatch(storyActions.removeTask({id:$scope.story.id, todoId}))
         // soft delete
-        store.dispatch({type: 'TODO:REMOVE', id:todoId, sync:true})
+        store.dispatch(taskActions.remove({id:todoId}))
     }
 
     $scope.openStory = function(id) {
@@ -56,7 +67,9 @@ export function StoryController($scope, store, uuid) {
     }
 
     $scope.onTodoMove = function(todoId,index) {
-        store.dispatch({type: 'STORY:TODO:MOVE', id:$scope.story.id, todoId, index, sync:true})
+        store.dispatch(
+            storyActions.moveTask({id:$scope.story.id, todoId, index})
+        )
     }
 
     $scope.dragoverCallback = function(event, index, external, type) {
@@ -65,6 +78,15 @@ export function StoryController($scope, store, uuid) {
 
     $scope.cloneTodo = function(todo, index) {
         $scope.addTodo(todo.title, index)
+    }
+
+    $scope.select = function() {
+        store.dispatch({type: "UI:STORY:SELECT", story: {
+            id: $scope.story.id,
+            column_id: $scope.$parent.column.id,
+            row: $scope.state.columns.items[$scope.$parent.column.id].stories.indexOf($scope.story.id),
+            column: $scope.state.board.columns.indexOf($scope.$parent.column.id)
+        }})
     }
 
     $scope.$watch('state.tasks', () => {

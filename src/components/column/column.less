@@ -1,13 +1,17 @@
 [column], column-create {
     overflow: auto;
-    .column-title {
+    .column-title input {
+        color: white;
         font-size: 1.2em;
-        background: #2c2d2f;
-        text-align: center;
-        padding: 10px;
-        margin-bottom: 10px;
+        background: transparent;
+        padding-left: 10px;
         height: 50px;
-        border-bottom: 1px solid #000;
+        border-width: 0px;
+        display: inline-block;
+
+        &:focus {
+            outline-width: 0;
+        }
     }
     background: #484f57;
     margin: 0 2px;
@@ -28,11 +32,11 @@
         }
     }
 
-    .column-add-story {
+    .action {
         color: white;
-        margin-top: 10px;
-        text-align: center;
-        font-size: 1.3em;
+        font-size: 1.2em;
+        padding: 0 5px;
+        line-height: 50px;
         text-shadow: 1px 1px 0px black;
     }
 }

@@ -1,27 +1,30 @@
-<div class="story-element">
+<div class="story-element" ng-click="select()" ng-class="{active: state.ui.selected_story.id == story.id}">
     <header class="story-header">
-        <span class="handle pull-left" ng-if="!state.ui.stories[story.id].edit">
+        <span class="handle pull-left">
             <i class="fa fa-ellipsis-v"></i><i class="fa fa-ellipsis-v"></i>
         </span>
         <div dnd-nodrag>
-            <span ng-click="toggleOpenStory(story.id)" ng-if="!state.ui.stories[story.id].edit"><u>{{story.title}}</u></span>
-            <span ng-if="state.ui.stories[story.id].edit"><input ng-model="story.title" ng-change="updateStory({title: story.title})"  ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 2500, 'blur': 0 } }"/></span>
-            <div class="story-infos pull-right">
-                <span class="story-size" ng-if="!state.ui.stories[story.id].edit">{{story.size}}</span>
-                <span class="story-size" ng-if="state.ui.stories[story.id].edit"><input ng-model="story.size" ng-change="updateStory({size: story.size})" ng-maxlength="2"/></span>
-
-                <span ng-click="editStory(story.id)" ng-if="!state.ui.stories[story.id].edit"><i class="fa fa-pencil"></i></span>
-
-                <span ng-click="stopEditStory(story.id)" ng-if="state.ui.stories[story.id].edit"><i class="fa fa-pencil"></i></span>
-
-                <span ng-click="openStory(story.id)" ng-if="!state.ui.stories[story.id].open"><i class="fa fa-angle-double-down"></i></span>
-                <span ng-click="closeStory(story.id)" ng-if="state.ui.stories[story.id].open"><i class="fa fa-angle-double-up"></i></span>
-
-                <span ng-click="removeStory(story.id)" ng-if="state.ui.stories[story.id].edit"><i class="fa fa-remove"></i></span>
-
-
+            <div ng-if="!state.ui.stories[story.id].open">
+                <span ng-click="toggleOpenStory(story.id)">{{story.title}}</span>
+                <div class="story-infos pull-right">
+                    <span class="story-size" ng-if="!state.ui.stories[story.id].edit">{{story.size}}</span>
+                    <span ng-click="toggleOpenStory(story.id)"><i class="fa fa-pencil"></i></span>
+                </div>
+                <span>{{story.checked_todo}}/{{story.todos.length}}</span>
             </div>
-            <span>{{story.checked_todo}}/{{story.todos.length}}</span>
+            <div ng-if="state.ui.stories[story.id].open">
+                <span>
+                    <input
+                        ng-model="story.title"
+                        ng-change="updateStory({title: story.title})"
+                        ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 500, 'blur': 0 } }"
+                        autofocus/>
+                    <span ng-click="toggleOpenStory(story.id)" class="btn-link pull-right">close</span>
+                </span>
+                <div>
+                    <span ng-click="removeStory(story.id)" ng-if="state.ui.stories[story.id].edit"><i class="fa fa-remove"></i></span>
+                </div>
+
             <div class="clearfix">
                 <div ng-class="{'pull-left': !state.ui.stories[story.id].edit}">
                     <span ng-if="state.ui.stories[story.id].edit || story.priority == MUST" ng-class="{active: story.priority == MUST}" class="label-priority label label-danger" ng-click="updateStory({priority: MUST})">MUST</span>

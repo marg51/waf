@@ -1,0 +1,13 @@
+<div style="color: white">
+    <button>Toggle</button>
+
+    <span><span shortcut="add()"></span> Add</span>
+
+    <div ng-repeat="action in actions">
+        <span shortcut="action.checked=!action.checked"></span>
+        <input type="checkbox" ng-model="action.checked" /> {{action.id}}
+        <span ng-click="remove(action)">
+            <span shortcut="remove(action)"></span> Remove
+        </span>
+    </div>
+</div>

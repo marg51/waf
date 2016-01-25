@@ -1,3 +1,6 @@
+import * as columnActions from '../column/actions'
+import * as boardActions from './actions'
+
 export function BoardController($scope, store, $timeout, uuid) {
 
     window.socket = io('http://localhost:4042', {
@@ -9,6 +12,7 @@ export function BoardController($scope, store, $timeout, uuid) {
         $timeout(angular.noop,0)
     }))
 
+    // eh!, not sure this should be there
     socket.emit('state', function(){});
     socket.on('state', function(state){
       store.dispatch({type: '//init/state', state})
@@ -22,19 +26,19 @@ export function BoardController($scope, store, $timeout, uuid) {
     socket.on('disconnect', () => {
         store.dispatch({type: 'UI:SOCKET:DISCONNECTED'})
     })
+    // end — eh! —
 
-    $scope.addColumn = function(column) {
-        column.id = uuid('column')
-        column.stories = []
+    $scope.addColumn = function() {
+        var id = uuid('column')
 
-        store.dispatch({type: '//GROUP', items: [
-                {type: 'COLUMN:CREATE', id:column.id, object: column},
-                {type: 'BOARD:COLUMN:ADD', columnId: column.id}
-            ],
-            name: 'COLUMN:CREATE',
-            sync: true
-        })
-        $scope.__.addColumn = false
+        store.dispatch(columnActions.add({id, name:"New Column"}))
+        store.dispatch(boardActions.addColumn({id:1, columnId:id}))
+    }
+
+    $scope.removeColumn = function(columnId) {
+        store.dispatch(boardActions.removeColumn({id:1, columnId}))
+        // if we don't remove the object, does it mean we can undo really easily?
+        // store.dispatch(columnActions.remove(columnId))
     }
 
 }
