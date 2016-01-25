@@ -36,7 +36,15 @@ io.on('connection', function (socket) {
   });
 
   socket.on('dispatch', function(action, callback) {
-    console.log('•',action.type)
+    action._metadata = {
+        origin: "webapp",
+        user: {
+            name: socket.decoded_token.name,
+            url: socket.decoded_token.avatar_url,
+            id: socket.decoded_token.id
+        }
+    }
+
     store.dispatch(action)
 
     callback()

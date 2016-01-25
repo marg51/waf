@@ -6,6 +6,6 @@ window._ = require('lodash')._;
 require('angular-bootstrap')
 require('angular-ui-router')
 require('angular-drag-and-drop-lists')
-require('mousetrap')
+// require('mousetrap')
 
 window.marked = require('marked')
