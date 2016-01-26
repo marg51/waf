@@ -28,11 +28,11 @@ store.subscribe(_.debounce(() => {
 
 
 // modules
+import {PluginService} from './plugin_middleware'
 require('./modules/github')
 
 // activate github OAUTH login
 require('./auth')
-
 
 // SOCKET SERVER
 var io = require('socket.io')(4042)
@@ -42,6 +42,16 @@ io.use(socketioJwt.authorize({
   secret: config.secret,
   handshake: true
 }));
+
+
+// dispatch actions from our plugins to users
+// ?? what happens for internal actions?
+PluginService.add('IO', (action, getState) => {
+    if(action._metadata.isPlugin) {
+        io.emit('dispatch', action)
+    }
+})
+// --
 
 console.log("Socket listening on", 4042)
 

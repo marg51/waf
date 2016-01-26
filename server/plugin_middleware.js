@@ -10,12 +10,13 @@ export const PluginMiddleware = store => next => action => {
     if(!action._metadata) {
         throw new Error(`action of type ${action.type} doesn't have metadata`)
     }
+    console.log(action._metadata.origin, action.type)
     map(services, (callback, name) => {
         if(action._metadata.origin != name) {
             try {
                 callback(action, store.getState)
             } catch(e) {
-                console.error(`• Couldnt execute service ${name} for action of type ${action.type}`, e)
+                console.error(`• Couldnt execute service "${name}" for action of type "${action.type}"`, e)
             }
         }
     })
@@ -35,7 +36,7 @@ export const PluginService = {
 
         return {
             dispatch: (action) => {
-                merge(action, {_metadata: {origin: name}})
+                merge(action, {_metadata: {origin: name, isPlugin: true}})
 
                 return store.dispatch(action)
             },

@@ -9,5 +9,7 @@ const {dispatch, getState} = PluginService.add('github', onAction)
 
 
 setTimeout(function() {
-    dispatch({type: 'YUP, it works'})
-}, 1000)
+    // this toggles waf's third task
+    dispatch({type: 'TODO:UPDATE', id: "todo_f3d561fe-0bb0-4bf3-a548-5745e0d51154", todo: {checked: !getState().tasks.items["todo_f3d561fe-0bb0-4bf3-a548-5745e0d51154"].checked}})
+}, 5000)
+
