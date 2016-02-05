@@ -1,48 +1,31 @@
-import {map, merge} from 'lodash'
-import {store} from './store'
+import {merge} from 'lodash'
+// see https://github.com/rackt/redux/blob/master/src/applyMiddleware.js
+// or https://github.com/rackt/redux/blob/72ae943646fe5e23e55e4b287744028bc46e593c/src/applyMiddleware.js for the exact file
+import {compose} from 'redux'
 
-const services = {}
-
-/*
- * we send the action to all registered services
+/**
+ * updated applyMiddleware
  */
-export const PluginMiddleware = store => next => action => {
-    if(!action._metadata) {
-        throw new Error(`action of type ${action.type} doesn't have metadata`)
+export function applyWafMiddleware(...middlewares) {
+  return store => {
+    var dispatch = store.dispatch
+    var chain = []
+
+    var middlewareAPI = {
+      getState: store.getState,
+      dispatch: (action) => {
+        //   this is our waf code
+        merge(action, {_metadata: {isPlugin: true}})
+
+        return dispatch(action)
+      }
     }
-    console.log(action._metadata.origin, action.type)
-    map(services, (callback, name) => {
-        if(action._metadata.origin != name) {
-            try {
-                callback(action, store.getState)
-            } catch(e) {
-                console.error(`• Couldnt execute service "${name}" for action of type "${action.type}"`, e)
-            }
-        }
-    })
+    chain = middlewares.map(middleware => middleware(middlewareAPI))
+    dispatch = compose(...chain)(store.dispatch)
 
-    return next(action)
-}
-
-// const {dispatch, getState} = service.add('github', onActionCallback)
-export const PluginService = {
-    add(name, callback) {
-        if(services[name]) {
-            throw new Error(`Plugin ${name} is already registered`)
-        }
-
-        services[name] = callback
-
-
-        return {
-            dispatch: (action) => {
-                merge(action, {_metadata: {origin: name, isPlugin: true}})
-
-                return store.dispatch(action)
-            },
-            getState: store.getState
-        }
-    }, remove(name) {
-        delete services[name]
+    return {
+      ...store,
+      dispatch
     }
+  }
 }

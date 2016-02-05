@@ -6,30 +6,9 @@ global._ = require('lodash')
 
 
 
-// REDUX stuff
-import {store} from './store';
-
-// reload state from previous session
-const state = JSON.parse(fs.readFileSync('./state.json'))
-store.dispatch({
-    type:'//init/state',
-    state,
-    _metadata: {
-        origin: 'server'
-    }
-})
-
-// We write the state up to 2 times per second
-store.subscribe(_.debounce(() => {
-    fs.writeFile('./state.json', JSON.stringify(store.getState()))
-}, 500))
-// -- end of Redux stuff
-
-
-
 // modules
-import {PluginService} from './plugin_middleware'
-require('./modules/github')
+// import {PluginService} from './plugin_middleware'
+// require('./modules/github')
 
 // activate github OAUTH login
 require('./auth')
@@ -44,14 +23,23 @@ io.use(socketioJwt.authorize({
 }));
 
 
-// dispatch actions from our plugins to users
-// ?? what happens for internal actions?
-PluginService.add('IO', (action, getState) => {
-    if(action._metadata.isPlugin) {
-        io.emit('dispatch', action)
-    }
-})
-// --
+// REDUX stuff
+import {initStore} from './store';
+
+
+// reload state from previous session
+import {GithubMiddleware} from './modules/github'
+import {IoMiddlewareFactory} from './modules/io'
+
+const state = JSON.parse(fs.readFileSync('./state.json'))
+const store  = initStore(state, [GithubMiddleware, IoMiddlewareFactory(io)])
+
+// We write the state up to 2 times per second
+store.subscribe(_.debounce(() => {
+    fs.writeFile('./state.json', JSON.stringify(store.getState()))
+}, 500))
+// -- end of Redux stuff
+
 
 console.log("Socket listening on", 4042)
 
