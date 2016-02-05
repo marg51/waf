@@ -10,8 +10,6 @@ global._ = require('lodash')
 // import {PluginService} from './plugin_middleware'
 // require('./modules/github')
 
-// activate github OAUTH login
-require('./auth')
 
 // SOCKET SERVER
 var io = require('socket.io')(4042)
@@ -39,6 +37,9 @@ store.subscribe(_.debounce(() => {
     fs.writeFile('./state.json', JSON.stringify(store.getState()))
 }, 500))
 // -- end of Redux stuff
+
+// activate github OAUTH login
+require('./auth').setStore(store)
 
 
 console.log("Socket listening on", 4042)
