@@ -46,8 +46,8 @@
         <div ng-if="story.description && !state.ui.stories[story.id].edit" class="todo-description">
             <span marked="story.description"></span>
         </div>
-        <div ng-if="state.ui.stories[story.id].edit">
-            <textarea class="form-control" ng-model="story.description" ng-change="updateStory({description: story.description})" ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 2500, 'blur': 0 } }"></textarea>
+        <div>
+            <textarea class="form-control" ng-model="story.description" ng-change="updateStory({description: story.description})" ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 1000, 'blur': 0 } }"></textarea>
         </div>
         <div ng-if="story.todos.length">
             <h4>Acceptance criteria</h4>

@@ -28,7 +28,7 @@ export function init(app) {
             // already FIRST or NOT FOUND
             if(currentStoryIndex < 1) return
 
-            store.dispatch({type: 'COLUMN:STORY:MOVE', id: story.column_id, storyId:story.id, index: currentStoryIndex - 1})
+            store.dispatch({type: 'COLUMN:STORY:MOVE', id: story.column_id, storyId:story.id, index: currentStoryIndex - 1, sync: true})
         })
         __(STORY_MOVE_DOWN, () => {
             var state = store.getState()
@@ -40,7 +40,7 @@ export function init(app) {
             // already LAST or NOT FOUND
             if(currentStoryIndex === -1 || currentStoryIndex > column.stories.length - 1) return
 
-            store.dispatch({type: 'COLUMN:STORY:MOVE', id: story.column_id, storyId:story.id, index: currentStoryIndex + 1})
+            store.dispatch({type: 'COLUMN:STORY:MOVE', id: story.column_id, storyId:story.id, index: currentStoryIndex + 1, sync: true})
         })
 
         function build_story_path(column, row) {
