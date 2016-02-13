@@ -15,6 +15,12 @@ export function ColumnController($scope, store, uuid, $timeout) {
             store.dispatch(columnActions.addStory({id: $scope.column.id, storyId, index}))
         }
         else {
+            // bc the d&d count the new position with the previous elm still at its original place
+            // so we actually have to remove 1 to account for that
+            if($scope.column.stories.indexOf(storyId) < index) {
+                index--
+            }
+
             store.dispatch(columnActions.moveStory({id: $scope.column.id, storyId, index}))
         }
     }
