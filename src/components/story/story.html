@@ -7,7 +7,12 @@
             <div ng-if="!state.ui.stories[story.id].open">
                 <span ng-click="toggleOpenStory(story.id)">{{story.title}}</span>
                 <div class="story-infos pull-right">
-                    <span class="story-size" ng-if="!state.ui.stories[story.id].edit">{{story.size}}</span>
+                    <input
+                        ng-model="story.size"
+                        ng-change="updateStory({size: story.size})"
+                        ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 1000, 'blur': 0 } }"
+                        class="story-size"/>
+
                     <span ng-click="toggleOpenStory(story.id)"><i class="fa fa-pencil"></i></span>
                 </div>
                 <span>{{story.checked_todo}}/{{story.todos.length}}</span>
@@ -18,7 +23,7 @@
                         ng-model="story.title"
                         ng-change="updateStory({title: story.title})"
                         ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 500, 'blur': 0 } }"
-                        autofocus/>
+                        app-autofocus="!story.todos.length"/>
                     <span ng-click="toggleOpenStory(story.id)" class="btn-link pull-right">close</span>
                 </span>
                 <div>
@@ -66,7 +71,7 @@
             </div>
         </div>
         <div class="form" ng-form="todo">
-            <input ng-model="__.todo" placeholder="add todo" class="form-control" on-enter="addTodo(__.todo);__.todo = ''"/>
+            <input ng-model="__.todo" placeholder="add todo" class="form-control" on-enter="addTodo(__.todo);__.todo = ''" app-autofocus="story.todos.length"/>
         </div>
     </div>
 </div>
