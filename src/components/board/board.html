@@ -9,16 +9,16 @@
             <div ng-repeat="action in state.history">
                 <div class="board-menu-row">
                     <span class="board-menu-icon">
-                        <i class="fa fa-check" ng-if="action.sync && !action.from_network"></i>
-                        <i class="fa fa-circle-o-notch fa-spin" ng-if="!action.sync && !action.from_network"></i>
-                        *<img ng-src="{{action.object.from.avatar_url}}" width='20px' ng-if="action.from_network"/>
+                        <i class="fa fa-check" ng-if="action.sync && !action.object._metadata"></i>
+                        <i class="fa fa-circle-o-notch fa-spin" ng-if="!action.sync && !action.object._metadata"></i>
+                        <img ng-if="action.object._metadata.origin == 'webapp'" ng-src="{{action.object._metadata.user.url}}" width='20px'/>
+                        <span ng-if="action.object._metadata.origin == 'github'"><i class="fa fa-github"></i></span>
                     </span>
                     <small>{{ action.object.type }}</small>
                 </div>
             </div>
         </div>
     </div>
-
 
     <div
         ng-repeat="columnId in state.board.columns"
