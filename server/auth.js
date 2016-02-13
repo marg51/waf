@@ -2,7 +2,6 @@ var request = require('request');
 var restify = require('restify');
 var jwt = require('jsonwebtoken');
 import {config} from './config'
-import {store} from './store'
 
 function getToken(code, callback) {
     request({
@@ -37,10 +36,10 @@ server.use(restify.bodyParser());
 
 server.get('/github', function (req, res, next) {
   getToken(req.params.code, function(err, token) {
-    store.dispatch({type: 'USER:ADD', token, id: req.params.code})
+    store.dispatch({type: 'USER:ADD', token, id: req.params.code, _metadata: {origin: 'Github Auth', private: true}})
     getBasicGithubData(token, function(err, data) {
         if(err == 200) {
-            store.dispatch({type: 'USER:UPDATE', id: req.params.code, object: _.pick(data, ['name','avatar_url', 'id'])})
+            store.dispatch({type: 'USER:UPDATE', id: req.params.code, object: _.pick(data, ['name','avatar_url', 'id']), _metadata: {origin: 'Github Auth', private: true}})
 
             var token = jwt.sign(store.getState().users.items[req.params.code].data, config.secret);
             res.send(token)
@@ -57,3 +56,11 @@ server.get('/github', function (req, res, next) {
 server.listen(4043, function () {
   console.log('%s listening at %s', server.name, server.url);
 });
+
+var store;
+export default {
+    setStore(_store) {
+        store = _store
+    }
+
+}
