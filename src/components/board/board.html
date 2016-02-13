@@ -8,7 +8,7 @@
         <div class="board-history">
             <div ng-repeat="action in state.history">
                 <div class="board-menu-row">
-                    <span class="board-menu-icon" tooltip="{{ action.object.type }}">
+                    <span class="board-menu-icon" tooltip="{{ action.object.type }}" tooltip-placement="right">
                         <i class="fa fa-check" ng-if="action.sync && !action.object._metadata"></i>
                         <i class="fa fa-circle-o-notch fa-spin" ng-if="!action.sync && !action.object._metadata"></i>
                         <img ng-if="action.object._metadata.origin == 'webapp'" ng-src="{{action.object._metadata.user.url}}" width='20px'/>
