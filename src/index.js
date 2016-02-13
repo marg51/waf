@@ -128,9 +128,21 @@ app.directive('promise', function() {
 
 app.directive('onEnter', function() {
     return (scope, elm, attr) => {
-        elm.on('keydown', function(event) {
-            if(event.keyCode == 13) {
-                scope.$eval(attr.onEnter)
+        elm.on('keydown', function($event) {
+            if(event.keyCode == 13 && !event.shiftKey) {
+                scope.$eval(attr.onEnter, {$event})
+                scope.$apply()
+            }
+        })
+    }
+})
+
+app.directive('onEsc', function() {
+    return (scope, elm, attr) => {
+        elm.on('keydown', function($event) {
+            if(event.keyCode == 27) {
+                scope.$eval(attr.onEnter, {$event})
+                scope.$apply()
             }
         })
     }
@@ -177,12 +189,14 @@ app.directive('marked', function($timeout) {
 })
 
 // https://gist.github.com/mlynch/dd407b93ed288d499778
-app.directive('autofocus', ['$timeout', function($timeout) {
+app.directive('appAutofocus', ['$timeout', function($timeout) {
   return {
     restrict: 'A',
-    link : function($scope, $element) {
+    link : function($scope, $element, $attrs) {
       $timeout(function() {
-        $element[0].focus();
+          console.log($scope.$eval($attrs.autofocus))
+          if(!$attrs.appAutofocus || $scope.$eval($attrs.appAutofocus))
+            $element[0].focus();
       });
     }
   }
