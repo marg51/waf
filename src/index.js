@@ -141,7 +141,7 @@ app.directive('onEsc', function() {
     return (scope, elm, attr) => {
         elm.on('keydown', function($event) {
             if(event.keyCode == 27) {
-                scope.$eval(attr.onEnter, {$event})
+                scope.$eval(attr.onEsc, {$event})
                 scope.$apply()
             }
         })
