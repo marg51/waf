@@ -1,14 +1,13 @@
 # Adding Plugins to the server
 
-Plugins for our app are redux' middleware, with a slight difference. See [Redux - Middleware](http://redux.js.org/docs/advanced/Middleware.html)
+Plugins for our app are [redux' middlewares](http://redux.js.org/docs/advanced/Middleware.html), with a slight difference: We expect every dispatched action to have `{_metadata: {origin: PLUGIN_NAME}}`
 
-The only difference is that we expect every action from the plugin to contain the object `{_metadata: {origin: PLUGIN_NAME}}`, to identify the action
 
 ## Examples
 
 #### github-like middleware
 
-If we want to add comment to github when we have a new comment in our app
+We create a new comment in our app, we want to synchronise it with github
 
 ```javascript
 export const GithubMiddleware = store => {
@@ -37,6 +36,7 @@ export const GithubMiddleware = store => {
         try {
 
             switch(action.type) {
+                // This is the list of actions we are interested in
                 case 'STORY:COMMENT:CREATE':
                     // random logic in here
                     doSomething(store.dispatch, state, action)
