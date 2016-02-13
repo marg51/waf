@@ -11,6 +11,8 @@ export function StoryController($scope, store, uuid) {
     $scope.BACKEND = 2
     $scope.DESIGN = 3
 
+    $scope._ = {}
+
     $scope.$on('$destroy', store.subscribe(() => {
         $scope.state = store.getState()
     }))
@@ -30,6 +32,7 @@ export function StoryController($scope, store, uuid) {
 
     // create a new todo and add it to the stories tasks
     $scope.addTodo = function(title, index) {
+        if(!title) return;
         var id = uuid('todo')
         store.dispatch(
             taskActions.add({id, title})
@@ -92,4 +95,8 @@ export function StoryController($scope, store, uuid) {
     $scope.$watch('state.tasks', () => {
         $scope.story.checked_todo = _.filter($scope.story.todos, todoId => $scope.state.tasks.items[todoId].checked).length
     })
+
+    $scope.blur = function($event) {
+        $event.currentTarget.blur()
+    }
 }

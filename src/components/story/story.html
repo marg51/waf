@@ -48,11 +48,18 @@
         </div>
     </header>
     <div ng-if="state.ui.stories[story.id].open" class="story-extended" dnd-nodrag>
-        <div ng-if="story.description && !state.ui.stories[story.id].edit" class="todo-description">
+        <div ng-if="story.description && !_.description" class="todo-description" ng-click="_.description = true">
             <span marked="story.description"></span>
         </div>
-        <div>
-            <textarea class="form-control" ng-model="story.description" ng-change="updateStory({description: story.description})" ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 1000, 'blur': 0 } }"></textarea>
+        <div ng-if="_.description || !story.description">
+            <textarea
+                class="form-control"
+                ng-model="story.description"
+                ng-change="updateStory({description: story.description}); _.description = true"
+                ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 1000, 'blur': 0 } }"
+                on-enter="blur($event);_.description = false"
+                on-esc="blur($event);_.description = false">
+            </textarea>
         </div>
         <div ng-if="story.todos.length">
             <h4>Acceptance criteria</h4>
