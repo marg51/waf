@@ -6,3 +6,34 @@ html body {
     font-size: 12px;
     background: #212121;
 }
+
+.display-flex {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .flex {
+        flex: 1;
+    }
+}
+
+[progress-bar] {
+    display: inline-block;
+    background:#222227;
+    border-radius: 10px;
+    padding: 3px;
+    height: 16px;
+    min-width: 50px;
+    .progress-bar-item {
+        background: #337ab7;
+        display: inline-block;
+        height: 10px;
+        border-radius: 10px 0 0 10px;
+    }
+
+    &.full-width {
+        .progress-bar-item {
+            border-radius: 10px;
+        }
+    }
+}

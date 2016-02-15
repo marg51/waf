@@ -188,6 +188,24 @@ app.directive('marked', function($timeout) {
     }
 })
 
+app.directive('progressBar', function() {
+    return {
+        template: `<span class="progress-bar-item" ng-style="{width: width}">&nbsp;</span>`,
+        scope: {
+            width: '@progressBar'
+        },
+        link: (scope, $elm) => {
+            scope.$watch('width', width => {
+                if(width === "100%") {
+                    $elm.addClass('full-width')
+                } else {
+                    $elm.removeClass('full-width')
+                }
+            })
+        }
+    }
+})
+
 // https://gist.github.com/mlynch/dd407b93ed288d499778
 app.directive('appAutofocus', ['$timeout', function($timeout) {
   return {
