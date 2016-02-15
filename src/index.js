@@ -71,6 +71,7 @@ import {combineReducers} from 'redux'
 import {newStore} from './store'
 
 import {reducer as stories} from './components/story/reducer'
+import {reducer as teams} from './components/team/reducer'
 import {reducer as board} from './components/board/reducer'
 import {reducer as columns} from './components/column/reducer'
 import {reducer as tasks} from './components/task/reducer'
@@ -80,6 +81,7 @@ export const store = newStore(combineReducers({
     stories,
     board,
     columns,
+    teams,
     ui,
     tasks,
     history: (state = [], action) => {

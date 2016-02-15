@@ -52,7 +52,7 @@ io.on('connection', function (socket) {
     // right now, the state is not automatically sent upon connection to avoid conflicts when the server restarts
     socket.on('state', function (data) {
       socket.emit('state', _.pick(
-          store.getState(), ["stories", "columns", "board", "tasks"]
+          store.getState(), ["stories", "columns", "board", "tasks", "teams"]
       ));
     });
 
