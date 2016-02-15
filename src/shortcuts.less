@@ -1,0 +1,19 @@
+[shortcut] {
+    .active {
+        // background: green;
+        .letter {
+            &.active, &.inactive {
+                color: #CCC;
+            }
+            &.next {
+                color: white;
+                text-decoration: none;
+                text-decoration: underline;
+            }
+        }
+    }
+    &.activated {
+        -webkit-animation: pulsate 0.3s ease-out;
+        -webkit-animation-iteration-count: infinite;
+    }
+}

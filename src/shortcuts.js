@@ -8,6 +8,7 @@ const STORY_SIZE_UP = "cmd+up"
 const STORY_SIZE_DOWN = "cmd+down"
 const STORY_OPEN = "enter"
 const STORY_CLOSE = "esc"
+const STORY_LIGHTEN = "space"
 
 export function init(app) {
     app.run(function(store) {
@@ -117,6 +118,15 @@ export function init(app) {
             var story = state.ui.selected_story
 
             store.dispatch({type: 'UI:STORY:CLOSE', id:story.id})
+        })
+
+        __(STORY_LIGHTEN, () => {
+            var state = store.getState()
+            var isLightOn = state.ui.is_light_on
+
+            if(isLightOn)
+                store.dispatch({type: 'UI:STORY:LIGHT:OFF'})
+            else store.dispatch({type: 'UI:STORY:LIGHT:ON'})
         })
     })
 }

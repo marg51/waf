@@ -18,6 +18,10 @@ export function reducer(state = {
             return _.merge({}, state, {stories: {[action.id]: {edit: false}}})
         case 'UI:STORY:SELECT':
             return _.merge({}, state, {selected_story: action.story})
+        case 'UI:STORY:LIGHT:OFF':
+            return _.merge({}, state, {is_light_on: false})
+        case 'UI:STORY:LIGHT:ON':
+            return _.merge({}, state, {is_light_on: true})
     }
 
     return state
