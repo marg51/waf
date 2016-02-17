@@ -58,3 +58,18 @@ export function moveTask({id, todoId, index}) {
         sync: true
     }
 }
+
+export function updateTeamStep({id, team, step}) {
+    return {
+        type: 'STORY:UPDATE',
+        id,
+        object: {
+            teams: {
+                [team]: {
+                    step
+                }
+            }
+        },
+        sync:true
+     }
+}

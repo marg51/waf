@@ -9,6 +9,14 @@
         ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 2500, 'blur': 0 } }"
         app-autofocus="!column.stories.length"/>
 
+    <span
+        progress-bar="{{stats.done/stats.total*100}}%"
+        class="pull-right"
+        ng-class="{
+            inactive: stats.total == 0,
+            done: stats.total == stats.done && stats.total
+        }"></span>
+
 </div>
 
 <div

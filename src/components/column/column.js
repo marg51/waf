@@ -1,5 +1,6 @@
 import * as columnActions from './actions'
 import * as storyActions from '../story/actions'
+import {steps} from '../team'
 
 export function ColumnController($scope, store, uuid, $timeout) {
     $scope.$on('$destroy', store.subscribe(() => {
@@ -41,9 +42,14 @@ export function ColumnController($scope, store, uuid, $timeout) {
         store.dispatch(columnActions.update({id: $scope.column.id, column}))
     }
 
-    $scope.$watch('column', column => {
-        if(column) {
-            // count the sum of points
-        }
+    $scope.$watch('state.stories', () => {
+        $scope.stats = _.reduce($scope.column.stories, (stats,storyId) => {
+            return _.reduce($scope.state.stories.items[storyId].teams, (stats, team) => {
+                stats.total += steps.length - 1
+                stats.done += steps.indexOf(team.step)
+
+                return stats
+            }, stats)
+        }, {total:0, done: 0})
     })
 }

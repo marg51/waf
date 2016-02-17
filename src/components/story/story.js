@@ -1,5 +1,6 @@
 import * as taskActions from '../task/actions'
 import * as storyActions from './actions'
+import {steps} from '../team'
 
 export function StoryController($scope, store, uuid) {
     $scope.MUST = 5
@@ -55,6 +56,14 @@ export function StoryController($scope, store, uuid) {
         store.dispatch({type: 'UI:STORY:CLOSE', id})
     }
 
+    $scope.teamNextStep = function(team) {
+        store.dispatch(storyActions.updateTeamStep({
+            id:$scope.story.id,
+            team,
+            step: steps[ steps.indexOf(_.get($scope.story,'teams['+team+'].step')) + 1 ] || steps[0]
+        }))
+    }
+
     $scope.toggleOpenStory = function(id) {
         if($scope.state.ui.stories[id] && $scope.state.ui.stories[id].open) {
             $scope.closeStory(id)
@@ -92,8 +101,13 @@ export function StoryController($scope, store, uuid) {
         }})
     }
 
-    $scope.$watch('state.tasks', () => {
-        $scope.story.checked_todo = _.filter($scope.story.todos, todoId => $scope.state.tasks.items[todoId].checked).length
+    $scope.$watch('story', () => {
+        $scope.stats = _.reduce($scope.story.teams, (stats, team) => {
+            stats.total += steps.length - 1
+            stats.done += steps.indexOf(team.step)
+
+            return stats
+        }, {total:0, done: 0})
     })
 
     $scope.blur = function($event) {

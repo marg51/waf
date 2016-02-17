@@ -3,54 +3,61 @@
         <span class="handle pull-left">
             <i class="fa fa-ellipsis-v"></i><i class="fa fa-ellipsis-v"></i>
         </span>
+
         <div dnd-nodrag>
-            <div ng-if="!state.ui.stories[story.id].open">
-                <span ng-click="toggleOpenStory(story.id)">{{story.title}}</span>
-                <div class="story-infos pull-right">
-                    <input
-                        ng-model="story.size"
-                        ng-change="updateStory({size: story.size})"
-                        ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 1000, 'blur': 0 } }"
-                        class="story-size"/>
+            <div class="display-flex">
+                <input
+                    class="story-title flex"
+                    ng-model="story.title"
+                    ng-change="updateStory({title: story.title})"
+                    ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 500, 'blur': 0 } }"
+                    app-autofocus="!story.todos.length"/>
 
-                    <span ng-click="toggleOpenStory(story.id)"><i class="fa fa-pencil"></i></span>
+
+                <div class="pull-right">
+                    <span
+                        progress-bar="{{stats.done/stats.total*100}}%"
+                        ng-class="{
+                            inactive: stats.total == 0,
+                            done: stats.total == stats.done && stats.total
+                        }"></span>
+
+                    <span ng-click="toggleOpenStory(story.id)">
+                        <i ng-if="state.ui.stories[story.id].open" class="fa fa-chevron-down"></i>
+                        <i ng-if="!state.ui.stories[story.id].open" class="fa fa-chevron-right"></i>
+                    </span>
                 </div>
-                <span>{{story.checked_todo}}/{{story.todos.length}}</span>
             </div>
-            <div ng-if="state.ui.stories[story.id].open">
-                <span>
-                    <input
-                        ng-model="story.title"
-                        ng-change="updateStory({title: story.title})"
-                        ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 500, 'blur': 0 } }"
-                        app-autofocus="!story.todos.length"/>
-                    <span ng-click="toggleOpenStory(story.id)" class="btn-link pull-right">close</span>
+            <!--<div class="btn-group pull-right">
+                <span
+                    ng-repeat="(teamId, team) in state.teams.items"
+                    class="btn btn-default btn-xs"
+                    ng-class="{active: story.teams[teamId]}"
+                    ng-click="teamNextStep(teamId)">
+                    {{team.name}}
                 </span>
-                <div>
-                    <span ng-click="removeStory(story.id)" ng-if="state.ui.stories[story.id].edit"><i class="fa fa-remove"></i></span>
-                </div>
-
-            <div class="clearfix">
-                <div ng-class="{'pull-left': !state.ui.stories[story.id].edit}">
-                    <span ng-if="state.ui.stories[story.id].edit || story.priority == MUST" ng-class="{active: story.priority == MUST}" class="label-priority label label-danger" ng-click="updateStory({priority: MUST})">MUST</span>
-                    <span ng-if="state.ui.stories[story.id].edit || story.priority == SHOULD" ng-class="{active: story.priority == SHOULD}" class="label-priority label label-warning" ng-click="updateStory({priority: SHOULD})">SHOULD</span>
-                    <span ng-if="state.ui.stories[story.id].edit || story.priority == COULD" ng-class="{active: story.priority == COULD}" class="label-priority label label-primary" ng-click="updateStory({priority: COULD})">COULD</span>
-                    <span ng-if="state.ui.stories[story.id].edit || story.priority == WOULD" ng-class="{active: story.priority == WOULD}" class="label-priority label label-info" ng-click="updateStory({priority: WOULD})">WOULD</span>
-                    <span ng-if="state.ui.stories[story.id].edit"  ng-class="{active: !story.priority}" class="label-priority label label-default" ng-click="updateStory({priority: 0})"> - </span>
-                </div>
-                <div>
-                    <span ng-if="state.ui.stories[story.id].edit || story.teams.frontend" ng-class="{active: story.teams.frontend}" class="label-priority label label-danger" ng-click="updateStory({teams:{frontend: !story.teams.frontend}})">Frontend</span>
-                    <span ng-if="state.ui.stories[story.id].edit || story.teams.backend" ng-class="{active: story.teams.backend}" class="label-priority label label-success" ng-click="updateStory({teams:{backend: !story.teams.backend}})">Backend</span>
-                    <span ng-if="state.ui.stories[story.id].edit || story.teams.design" ng-class="{active: story.teams.design}" class="label-priority label label-primary" ng-click="updateStory({teams:{design: !story.teams.design}})">Design</span>
-                </div>
-            </div>
-
+            </div>-->
         </div>
     </header>
+
+
     <div ng-if="state.ui.stories[story.id].open" class="story-extended" dnd-nodrag>
-        <div ng-if="story.description && !_.description" class="todo-description" ng-click="_.description = true">
+        <div class="clearfix">
+            <div class="btn-group">
+                <span
+                    ng-repeat="(teamId, team) in state.teams.items"
+                    class="btn btn-default btn-xs"
+                    ng-class="{active: story.teams[teamId]}"
+                    ng-click="teamNextStep(teamId)">
+                    {{team.name}} {{story.teams[teamId].step}}
+                </span>
+            </div>
+        </div>
+
+        <div ng-if="story.description && !_.description" class="todo-description" ng-dblclick="_.description = true">
             <span marked="story.description"></span>
         </div>
+
         <div ng-if="_.description || !story.description">
             <textarea
                 class="form-control"
@@ -61,6 +68,7 @@
                 on-esc="blur($event);_.description = false">
             </textarea>
         </div>
+
         <div ng-if="story.todos.length">
             <h4>Acceptance criteria</h4>
             <div class="todo-list" dnd-list="[]" dnd-inserted="onTodoMove(item,index,type)" dnd-dragover="dragoverCallback(event, index, external, type)">
@@ -78,7 +86,13 @@
             </div>
         </div>
         <div class="form" ng-form="todo">
-            <input ng-model="__.todo" placeholder="add todo" class="form-control" on-enter="addTodo(__.todo);__.todo = ''" app-autofocus="story.todos.length"/>
+            <textarea
+                ng-model="__.todo"
+                placeholder="Add task"
+                class="form-control"
+                on-enter="addTodo(__.todo);__.todo = ''"
+                no-app-autofocus="story.todos.length"
+                on-esc="blur($event);_.description = false"></textarea>
         </div>
     </div>
 </div>
