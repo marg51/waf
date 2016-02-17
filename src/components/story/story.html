@@ -28,6 +28,9 @@
                     </span>
                 </div>
             </div>
+            <div>
+                <span ng-repeat="(labelId,label) in story.labels" ng-if="label" class="tag" ng-class="'tag-'+labelId"></span>
+            </div>
             <!--<div class="btn-group pull-right">
                 <span
                     ng-repeat="(teamId, team) in state.teams.items"

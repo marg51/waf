@@ -9,6 +9,15 @@ const STORY_SIZE_DOWN = "cmd+down"
 const STORY_OPEN = "enter"
 const STORY_CLOSE = "esc"
 const STORY_LIGHTEN = "space"
+const LABEL_GREEN = "1"
+const LABEL_YELLOW = "2"
+const LABEL_ORANGE = "3"
+const LABEL_RED = "4"
+const LABEL_PURPLE = "5"
+const LABEL_BLUE = "6"
+
+
+import * as storyActions from './components/story/actions'
 
 export function init(app) {
     app.run(function(store) {
@@ -128,5 +137,34 @@ export function init(app) {
                 store.dispatch({type: 'UI:STORY:LIGHT:OFF'})
             else store.dispatch({type: 'UI:STORY:LIGHT:ON'})
         })
+
+        function toggleLabel(label) {
+            var state = store.getState()
+            var story = state.ui.selected_story
+
+            if(state.stories.items[story.id]) {
+                var currentValue = _.get(state.stories.items[story.id].labels,label)
+                store.dispatch(storyActions.update({id:story.id, story:{labels: {[label]: !currentValue}}}))
+            }
+        }
+        __(LABEL_GREEN, () => {
+            toggleLabel("green")
+        })
+        __(LABEL_YELLOW, () => {
+            toggleLabel("yellow")
+        })
+        __(LABEL_ORANGE, () => {
+            toggleLabel("orange")
+        })
+        __(LABEL_RED, () => {
+            toggleLabel("red")
+        })
+        __(LABEL_PURPLE, () => {
+            toggleLabel("purple")
+        })
+        __(LABEL_BLUE, () => {
+            toggleLabel("blue")
+        })
     })
 }
+
