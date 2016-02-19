@@ -1,4 +1,4 @@
-<div class="story-element" ng-click="select()" ng-class="{active: state.ui.selected_story.id == story.id}">
+<div class="story-element" ng-click="select()" ng-mouseover="select()" ng-class="{active: state.ui.selected_story.id == story.id}">
     <header class="story-header">
         <span class="handle pull-left">
             <i class="fa fa-ellipsis-v"></i><i class="fa fa-ellipsis-v"></i>
@@ -22,7 +22,7 @@
                             done: stats.total == stats.done && stats.total
                         }"></span>
 
-                    <span ng-click="toggleOpenStory(story.id)">
+                    <span ng-click="toggleOpenStory(story.id)" class="fix-chevron-size">
                         <i ng-if="state.ui.stories[story.id].open" class="fa fa-chevron-down"></i>
                         <i ng-if="!state.ui.stories[story.id].open" class="fa fa-chevron-right"></i>
                     </span>

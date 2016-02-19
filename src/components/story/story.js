@@ -93,6 +93,8 @@ export function StoryController($scope, store, uuid) {
     }
 
     $scope.select = function() {
+        if(_.get($scope.state.ui,'selected_story.id') == $scope.story.id)
+            return
         store.dispatch({type: "UI:STORY:SELECT", story: {
             id: $scope.story.id,
             column_id: $scope.$parent.column.id,
