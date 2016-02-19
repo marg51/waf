@@ -8,3 +8,13 @@ export function story() {
         controller: StoryController
     }
 }
+
+export function storyModal() {
+    return {
+        template: require('./story-modal.html'),
+        scope: {
+            story: "=storyModal"
+        },
+        controller: StoryController
+    }
+}
