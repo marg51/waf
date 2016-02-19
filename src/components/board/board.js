@@ -1,7 +1,7 @@
 import * as columnActions from '../column/actions'
 import * as boardActions from './actions'
 
-export function BoardController($scope, store, $timeout, uuid) {
+export function BoardController($scope, store, $timeout, uuid, $modal) {
 
     window.socket = io('http://localhost:4042', {
         query: 'token='+localStorage.getItem('waf.token')
@@ -40,5 +40,25 @@ export function BoardController($scope, store, $timeout, uuid) {
         // if we don't remove the object, does it mean we can undo really easily?
         // store.dispatch(columnActions.remove(columnId))
     }
+
+
+    var current_modal;
+    $scope.$watch('state.ui.open_story', (story_id) => {
+        if(current_modal) current_modal.close()
+
+        if(story_id) {
+            current_modal = $modal.open({
+                template: `<div story-modal="state.stories.items['${story_id}']"/>`,
+                scope: $scope,
+                animation: false,
+                keyboard: false // it's handled by a shortcut
+            })
+
+            // this is(should be) only triggered when you click outside the modal
+            current_modal.result.catch(() => {
+                store.dispatch({type: 'UI:STORY:CLOSE', story_id})
+            })
+        }
+    })
 
 }

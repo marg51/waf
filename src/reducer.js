@@ -1,6 +1,7 @@
 export function reducer(state = {
     socket_connected: false,
     selected_story: null,
+    open_story: null,
     stories: {}
 }, action) {
     switch(action.type) {
@@ -9,9 +10,11 @@ export function reducer(state = {
         case 'UI:SOCKET:DISCONNECTED':
             return _.merge({}, state, {socket_connected: false})
         case 'UI:STORY:OPEN':
-            return _.merge({}, state, {stories: {[action.id]: {open: true}}})
+            // return _.merge({}, state, {stories: {[action.id]: {open: true}}})
+            return _.merge({}, state, {open_story: action.id})
         case 'UI:STORY:CLOSE':
-            return _.merge({}, state, {stories: {[action.id]: {open: false}}})
+            // return _.merge({}, state, {stories: {[action.id]: {open: false}}})
+            return _.merge({}, state, {open_story: null})
         case 'UI:STORY:CLOSE:ALL':
             // immatibility is broken, right? oO
             return _.merge({}, state, {stories: _.mapKeys(state.stories, story => story.open = false)})
