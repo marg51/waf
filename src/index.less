@@ -22,18 +22,28 @@ html body {
     background:#222227;
     border-radius: 10px;
     padding: 3px;
-    height: 16px;
-    min-width: 50px;
+    height: 12px;
+    min-width: 46px;
+    transform: rotate(-90deg) translateX(-12px);
     .progress-bar-item {
         background: #337ab7;
         display: inline-block;
-        height: 10px;
+        height: 6px;
         border-radius: 10px 0 0 10px;
     }
 
     &.full-width {
         .progress-bar-item {
             border-radius: 10px;
+        }
+    }
+    &.inactive {
+        opacity: 0.5;
+    }
+    &.done {
+        background:#3C763D;
+        .progress-bar-item {
+            background: #25c082;
         }
     }
 }

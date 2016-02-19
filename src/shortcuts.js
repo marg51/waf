@@ -63,6 +63,7 @@ export function init(app) {
                 column
             }
         }
+
         __(STORY_SELECT_UP, () => {
             var state = store.getState()
             var story = state.ui.selected_story
@@ -126,7 +127,12 @@ export function init(app) {
             var state = store.getState()
             var story = state.ui.selected_story
 
-            store.dispatch({type: 'UI:STORY:CLOSE', id:story.id})
+            // if the story is open
+            if(_.get(state.ui.stories[story.id], 'open'))
+                store.dispatch({type: 'UI:STORY:CLOSE', id:story.id})
+            // otherwise close all stories
+            else
+                store.dispatch({type: 'UI:STORY:CLOSE:ALL'})
         })
 
         __(STORY_LIGHTEN, () => {
