@@ -6,11 +6,20 @@
 </label>
 
 <span dnd-nodrag class="todo-title display-flex">
-    <span ng-if="!_.edit" ng-click="_.edit = true" class="flex">
+    <span ng-if="!_.edit" ng-dblclick="_.edit = true" class="flex">
         <span marked="task.title"></span>
     </span>
     <span ng-if="_.edit"  class="display-flex flex">
-        <textarea class="flex" ng-model="task.title" class="todo-edit-title" ng-change="updateTodo(task.id, {title: task.title})"  ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 1000, 'blur': 0 } }" autofocus on-enter="blur($event);_.edit = false" on-esc="_.edit = false"></textarea>
+        <textarea
+            class="flex"
+            ng-model="task.title"
+            class="todo-edit-title"
+            ng-change="updateTodo(task.id, {title: task.title})"
+            ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 1000, 'blur': 0 } }"
+            autofocus
+            on-enter="blur($event);_.edit = false"
+            on-esc="_.edit = false"
+            msd-elastic></textarea>
     </span>
 </span>
 
