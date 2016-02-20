@@ -97,7 +97,14 @@ export function init(app) {
             // already FIRST
             if(story.column == 0) return
 
-            store.dispatch({type: 'UI:STORY:SELECT', story:build_story_path(story.column-1, 0)})
+            var new_column = state.columns.items[
+                state.board.columns[story.column-1]
+            ]
+
+            if(new_column.stories.length <= story.row)
+                story.row = new_column.stories.length - 1
+
+            store.dispatch({type: 'UI:STORY:SELECT', story:build_story_path(story.column-1, story.row)})
 
             return false
         })
@@ -109,8 +116,14 @@ export function init(app) {
             // already LAST column
             if(story.column > state.board.columns.length - 1) return
 
+            var new_column = state.columns.items[
+                state.board.columns[story.column+1]
+            ]
 
-            store.dispatch({type: 'UI:STORY:SELECT', story:build_story_path(story.column+1, 0)})
+            if(new_column.stories.length <= story.row)
+                story.row = new_column.stories.length - 1
+
+            store.dispatch({type: 'UI:STORY:SELECT', story:build_story_path(story.column+1, story.row)})
 
             return false
         })
