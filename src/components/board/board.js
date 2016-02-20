@@ -48,6 +48,7 @@ export function BoardController($scope, store, $timeout, uuid, $modal) {
 
         if(story_id) {
             current_modal = $modal.open({
+                size: 'lg',
                 template: `<div story-modal="state.stories.items['${story_id}']"/>`,
                 scope: $scope,
                 animation: false,
