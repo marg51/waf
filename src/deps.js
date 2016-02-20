@@ -7,5 +7,6 @@ require('angular-bootstrap')
 require('angular-ui-router')
 require('angular-drag-and-drop-lists')
 require('mousetrap')
+require('angular-elastic')
 
 window.marked = require('marked')

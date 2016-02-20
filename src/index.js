@@ -1,7 +1,8 @@
 var app = angular.module('app', [
     'ui.router',
     'dndLists',
-    'ui.bootstrap'
+    'ui.bootstrap',
+    'monospaced.elastic'
 ])
 
 
@@ -215,8 +216,10 @@ app.directive('appAutofocus', ['$timeout', function($timeout) {
     link : function($scope, $element, $attrs) {
       $timeout(function() {
           console.log($scope.$eval($attrs.autofocus))
-          if(!$attrs.appAutofocus || $scope.$eval($attrs.appAutofocus))
-            $element[0].focus();
+          if(!$attrs.appAutofocus || $scope.$eval($attrs.appAutofocus)) {
+            // $element[0].focus();
+            console.log("autofocus is disabled")
+          }
       });
     }
   }
