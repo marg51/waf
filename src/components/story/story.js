@@ -63,6 +63,12 @@ export function StoryController($scope, store, uuid) {
             step: steps[ steps.indexOf(_.get($scope.story,'teams['+team+'].step')) + 1 ] || steps[0]
         }))
     }
+    $scope.removeTeam = function(team) {
+        store.dispatch(storyActions.removeTeam({
+            id:$scope.story.id,
+            team
+        }))
+    }
 
     $scope.toggleOpenStory = function(id) {
         if($scope.state.ui.stories[id] && $scope.state.ui.stories[id].open) {

@@ -73,3 +73,26 @@ export function updateTeamStep({id, team, step}) {
         sync:true
      }
 }
+// real remove team
+export function _removeTeam({id, team}) {
+    return {
+        type: 'STORY:UPDATE',
+        id,
+        object: {
+            teams: {
+                [team]: {
+                    disabled: true
+                }
+            }
+        },
+        sync:true
+     }
+}
+export function removeTeam({id, team}) {
+    return {
+        type: 'STORY:TEAM:REMOVE',
+        id,
+        team,
+        sync:true
+     }
+}

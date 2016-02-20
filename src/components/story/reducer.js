@@ -113,6 +113,16 @@ export function reducer(state = INIT_STATE, action) {
                     }
                 }
             )
+        case 'STORY:TEAM:REMOVE':
+            checkStory(state, action.id)
+
+            delete state.items[action.id].teams[action.team]
+
+            return _.merge({}, state, {
+                items: {
+                    [action.id]: state.items[action.id]
+                }
+            })
     }
 
     return state

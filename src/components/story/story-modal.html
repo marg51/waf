@@ -1,4 +1,4 @@
-<div class="story-element">
+<div class="story-element clearfix">
     <header class="story-header">
         <div>
             <div class="display-flex">
@@ -25,59 +25,94 @@
         </div>
     </header>
 
+    <div class="display-flex flex-stretch">
+        <div class="story-extended flex-2">
+            <div class="clearfix">
+                <div class="btn-group">
 
-    <div class="story-extended">
-        <div class="clearfix">
-            <div class="btn-group">
-                <span
-                    ng-repeat="(teamId, team) in state.teams.items"
-                    class="btn btn-default btn-xs"
-                    ng-class="{active: story.teams[teamId]}"
-                    ng-click="teamNextStep(teamId)">
-                    {{team.name}} {{story.teams[teamId].step}}
-                </span>
+                </div>
             </div>
-        </div>
 
-        <div ng-if="story.description && !_.description" class="todo-description" ng-dblclick="_.description = true">
-            <span marked="story.description"></span>
-        </div>
+            <div ng-if="story.description && !_.description" class="todo-description" ng-dblclick="_.description = true">
+                <span marked="story.description"></span>
+            </div>
 
-        <div ng-if="_.description || !story.description">
-            <textarea
-                class="form-control"
-                ng-model="story.description"
-                ng-change="updateStory({description: story.description}); _.description = true"
-                ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 1000, 'blur': 0 } }"
-                on-enter="blur($event);_.description = false"
-                on-esc="blur($event);_.description = false">
-            </textarea>
-        </div>
-
-        <div ng-if="story.todos.length">
-            <h4>Acceptance criteria</h4>
-            <div class="todo-list" dnd-list="[]" dnd-inserted="onTodoMove(item,index,type)" dnd-dragover="dragoverCallback(event, index, external, type)">
-                <div
-                    ng-repeat="todoId in story.todos"
-                    class="todo"
-                    dnd-draggable="todoId"
-                    dnd-type="['todo',story]">
+            <div ng-if="_.description || !story.description">
+                <textarea
+                    class="form-control"
+                    msd-elastic
+                    ng-model="story.description"
+                    ng-change="updateStory({description: story.description}); _.description = true"
+                    ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 1000, 'blur': 0 } }"
+                    on-enter="blur($event);_.description = false"
+                    placeholder="Description"
+                    on-esc="blur($event);_.description = false">
+                </textarea>
+            </div>
+            <hr />
+            <div ng-if="story.todos.length">
+                <h4>Acceptance criteria</h4>
+                <div class="todo-list" dnd-list="[]" dnd-inserted="onTodoMove(item,index,type)" dnd-dragover="dragoverCallback(event, index, external, type)">
                     <div
-                        task="state.tasks.items[todoId]"
-                        edit="state.ui.stories[story.id].edit"
-                        on-remove="removeTodo(id)"
-                        on-clone="cloneTodo(task, $index)"></div>
-                 </div>
+                        ng-repeat="todoId in story.todos"
+                        class="todo"
+                        dnd-draggable="todoId"
+                        dnd-type="['todo',story]">
+                        <div
+                            task="state.tasks.items[todoId]"
+                            edit="state.ui.stories[story.id].edit"
+                            on-remove="removeTodo(id)"
+                            on-clone="cloneTodo(task, $index)"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="form" ng-form="todo">
+                <textarea
+                    ng-model="__.todo"
+                    msd-elastic
+                    placeholder="Add task"
+                    class="form-control"
+                    on-enter="addTodo(__.todo);__.todo = ''"
+                    no-app-autofocus="story.todos.length"
+                    on-esc="blur($event);_.description = false"></textarea>
             </div>
         </div>
-        <div class="form" ng-form="todo">
-            <textarea
-                ng-model="__.todo"
-                placeholder="Add task"
-                class="form-control"
-                on-enter="addTodo(__.todo);__.todo = ''"
-                no-app-autofocus="story.todos.length"
-                on-esc="blur($event);_.description = false"></textarea>
+        <div class="story-sidebar flex">
+            <ul class="list-group">
+                <li
+                    ng-repeat="(teamId, team) in state.teams.items"
+                    class="list-group-item">
+                    <span class="label-circle" ng-class="team.class">{{team.name[0]}}</span> <small>{{team.name}}</small>
+
+                    <span class="pull-right btn-group" ng-if="story.teams[teamId]">
+                        <span
+                            class="btn btn-xs btn-default"
+                            ng-click="teamNextStep(teamId)">
+                            {{story.teams[teamId].step}}
+                        </span>
+                        <span
+                            class="btn btn-xs btn-danger"
+                            ng-click="removeTeam(teamId)">
+                            <i class="fa fa-remove"></i>
+                        </span>
+                    </span>
+                    <span class="pull-right" ng-if="!story.teams[teamId]">
+                        <span
+                            class="btn btn-xs btn-primary"
+                            ng-click="teamNextStep(teamId)">
+                            add
+                        </span>
+                    </span>
+                </li>
+            </ul>
+            <ul class="list-group">
+                <li class="list-group-item">Estimate <input class="pull-right" ng-change="updateStory({size: story.size})" ng-model="story.size" ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 1000, 'blur': 0 } }"/></li>
+            </ul>
+
+            <ul class="list-group">
+                <li class="list-group-item"><span class="text-danger">Delete story (soon)</span></li>
+            </ul>
+
         </div>
     </div>
 </div>

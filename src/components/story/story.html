@@ -6,7 +6,7 @@
 
         <div dnd-nodrag>
             <div class="display-flex">
-                <div class="flex">{{story.title}}</div>
+                <div class="flex">{{story.title}} ({{story.size}})</div>
 
 
                 <div class="pull-right">
@@ -18,16 +18,14 @@
                         }"></span>
                 </div>
             </div>
-            <div>
+            <div class="pull-left">
                 <span ng-repeat="(labelId,label) in story.labels" ng-if="label" class="tag" ng-class="'tag-'+labelId"></span>
             </div>
-            <!--<div class="btn-group pull-right">
+            <!--<div class="pull-right story-teams btn-group">
                 <span
-                    ng-repeat="(teamId, team) in state.teams.items"
-                    class="btn btn-default btn-xs"
-                    ng-class="{active: story.teams[teamId]}"
-                    ng-click="teamNextStep(teamId)">
-                    {{team.name}}
+                    ng-repeat="(teamId, team) in story.teams"
+                    class="label-circle btn btn-xs disabled" ng-class="state.teams.items[teamId].class"
+                    >{{state.teams.items[teamId].name[0]}}
                 </span>
             </div>-->
         </div>
