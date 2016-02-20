@@ -1,13 +1,12 @@
 <div class="column-title">
     <span class="pull-left action" ng-click="onRemove()"><i class="fa fa-remove"></i></span>
 
-    <span class="pull-right action" ng-click="addStory()"><i class="fa fa-plus"></i></span>
-
     <input
         ng-model="column.name"
         ng-change="updateColumn({name: column.name})"
         ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 2500, 'blur': 0 } }"
         app-autofocus="!column.stories.length"/>
+    {{stats.points}}
 
     <span
         progress-bar="{{stats.done/stats.total*100}}%"
@@ -29,5 +28,6 @@
         ng-repeat="storyId in column.stories"
         story="state.stories.items[storyId]"
         dnd-draggable="storyId"
-        dnd-type="['story',column]"/>
+        dnd-type="['story',column]"></div>
 </div>
+<div class="action text-center" ng-click="addStory()"><small><i class="fa fa-plus"></i> Add Story</small></div>

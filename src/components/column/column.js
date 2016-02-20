@@ -44,12 +44,14 @@ export function ColumnController($scope, store, uuid, $timeout) {
 
     $scope.$watch('state.stories', () => {
         $scope.stats = _.reduce($scope.column.stories, (stats,storyId) => {
+            stats.points += parseInt(_.get($scope.state.stories.items[storyId],'size',0))
+
             return _.reduce($scope.state.stories.items[storyId].teams, (stats, team) => {
-                stats.total += steps.length - 1
-                stats.done += steps.indexOf(team.step)
+                stats.total += _.get($scope.state.stories.items[storyId],'size',0) * (steps.length - 1)
+                stats.done +=  _.get($scope.state.stories.items[storyId],'size',0) * steps.indexOf(team.step)
 
                 return stats
             }, stats)
-        }, {total:0, done: 0})
+        }, {total:0, done: 0, points: 0})
     })
 }
