@@ -15,6 +15,13 @@ html body {
     .flex {
         flex: 1;
     }
+    .flex-2 {
+        flex: 2;
+    }
+
+    &.flex-stretch {
+        align-items: stretch;
+    }
 }
 
 [progress-bar] {
@@ -24,7 +31,7 @@ html body {
     padding: 3px;
     height: 12px;
     min-width: 46px;
-    transform: rotate(-90deg) translateX(-12px);
+    // transform: rotate(-90deg) translateX(-12px);
     .progress-bar-item {
         background: #337ab7;
         display: inline-block;
