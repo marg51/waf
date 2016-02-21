@@ -70,6 +70,12 @@ export function StoryController($scope, store, uuid) {
         }))
     }
 
+    $scope.addRessource = function(ressource) {
+        $scope.updateStory({
+            ressources: {[ressource.url]: ressource}
+        })
+    }
+
     $scope.toggleOpenStory = function(id) {
         if($scope.state.ui.stories[id] && $scope.state.ui.stories[id].open) {
             $scope.closeStory(id)
