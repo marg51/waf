@@ -143,9 +143,6 @@ export function init(app) {
             // if the story is open
             if(_.get(state.ui.stories[story.id], 'open'))
                 store.dispatch({type: 'UI:STORY:CLOSE', id:story.id})
-            // otherwise close all stories
-            else
-                store.dispatch({type: 'UI:STORY:CLOSE:ALL'})
         })
 
         __(STORY_LIGHTEN, () => {
