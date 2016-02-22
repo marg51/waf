@@ -51,8 +51,7 @@ export function BoardController($scope, store, $timeout, uuid, $modal) {
                 size: 'lg',
                 template: `<div story-modal="state.stories.items['${story_id}']"/>`,
                 scope: $scope,
-                animation: false,
-                keyboard: false // it's handled by a shortcut
+                animation: false
             })
 
             // this is(should be) only triggered when you click outside the modal
