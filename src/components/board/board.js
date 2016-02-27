@@ -17,6 +17,9 @@ export function BoardController($scope, store, $timeout, uuid, $modal) {
     socket.on('state', function(state){
       store.dispatch({type: '//init/state', state})
     });
+    socket.on('me', function(data) {
+        $scope.me = data
+    })
     socket.on('dispatch', function(action){
       store.dispatch(action)
     });

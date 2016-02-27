@@ -6,14 +6,14 @@
 
         <div dnd-nodrag>
             <div class="display-flex">
-                <div class="flex">{{story.title}} ({{story.size}})</div>
+                <div class="flex">{{story.title}} <span ng-if="story.size">({{story.size}})</span></div>
 
 
                 <div class="pull-right">
                     <span
                         progress-bar="{{stats.done/stats.total*100}}%"
                         ng-class="{
-                            inactive: stats.total == 0,
+                            'ng-hide': stats.total == 0,
                             done: stats.total == stats.done && stats.total
                         }"></span>
                 </div>
