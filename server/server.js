@@ -26,11 +26,13 @@ import {initStore} from './store';
 
 
 // reload state from previous session
-import {GithubMiddleware} from './modules/github'
+// import {GithubMiddleware} from './modules/github'
+import {TrelloMiddleware} from './modules/trello'
 import {IoMiddlewareFactory} from './modules/io'
 
 const state = JSON.parse(fs.readFileSync('./state.json'))
-const store  = initStore(state, [GithubMiddleware, IoMiddlewareFactory(io)])
+// const store  = initStore(state, [GithubMiddleware, IoMiddlewareFactory(io)])
+const store  = initStore(state, [TrelloMiddleware, IoMiddlewareFactory(io)])
 
 // We write the state up to 2 times per second
 store.subscribe(_.debounce(() => {
@@ -48,6 +50,8 @@ console.log("Socket listening on", 4042)
 io.on('connection', function (socket) {
     console.log('User logged-in', socket.decoded_token);
 
+    socket.emit('me', socket.decoded_token)
+
     // when the user request the current state
     // right now, the state is not automatically sent upon connection to avoid conflicts when the server restarts
     socket.on('state', function (data) {
@@ -63,9 +67,12 @@ io.on('connection', function (socket) {
     action._metadata = {
         origin: "webapp",
         user: {
-            name: socket.decoded_token.name,
-            url: socket.decoded_token.avatar_url,
-            id: socket.decoded_token.id
+            github: {
+                name: socket.decoded_token.name,
+                url: socket.decoded_token.avatar_url,
+                id: socket.decoded_token.id
+            },
+            trello: socket.decoded_token.trello
         }
     }
 
