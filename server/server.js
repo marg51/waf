@@ -23,7 +23,7 @@ io.use(socketioJwt.authorize({
 
 // REDUX stuff
 import {initStore} from './store';
-require('./modules/trello/webhook')
+
 
 // reload state from previous session
 // import {GithubMiddleware} from './modules/github'
@@ -39,6 +39,8 @@ store.subscribe(_.debounce(() => {
     fs.writeFile('./state.json', JSON.stringify(store.getState()))
 }, 500))
 // -- end of Redux stuff
+
+require('./modules/trello/webhook')(store);
 
 // activate github OAUTH login
 require('./auth').setStore(store)
