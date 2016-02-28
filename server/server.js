@@ -28,19 +28,18 @@ import {initStore} from './store';
 // reload state from previous session
 // import {GithubMiddleware} from './modules/github'
 import {TrelloMiddleware} from './modules/trello'
+import {TrelloWebhookMiddleware} from './modules/trello/webhook'
 import {IoMiddlewareFactory} from './modules/io'
 
 const state = JSON.parse(fs.readFileSync('./state.json'))
 // const store  = initStore(state, [GithubMiddleware, IoMiddlewareFactory(io)])
-const store  = initStore(state, [TrelloMiddleware, IoMiddlewareFactory(io)])
+const store  = initStore(state, [TrelloMiddleware, TrelloWebhookMiddleware, IoMiddlewareFactory(io)])
 
 // We write the state up to 2 times per second
 store.subscribe(_.debounce(() => {
     fs.writeFile('./state.json', JSON.stringify(store.getState()))
 }, 500))
 // -- end of Redux stuff
-
-require('./modules/trello/webhook')(store);
 
 // activate github OAUTH login
 require('./auth').setStore(store)

@@ -10,32 +10,48 @@ server.use(restify.bodyParser());
 
 import * as storyActions from '../../../src/components/story/actions'
 
+const decorate = (action) => {
+    return _.set(action, '_metadata.origin', 'trello')
+}
 
-export default function(store) {
+export const TrelloWebhookMiddleware =  (store) => {
     server.head('/', function (req, res, next) {
         res.send(200)
         return next();
     });
 
-    server.get('/', function(req, res, next) {
+    server.post('/', function(req, res, next) {
         res.send(200)
 
-        var state = store.getState()
-        var action = req.params.action
-        switch(action.type) {
-            case 'updateCard':
-                if(action.data.old.name)
-                    store.dispatch(storyActions.update({id: 1, story: {title: action.data.card.name}}))
+        try {
+            var state = store.getState()
+            var action = req.params.action
 
+            switch(action.type) {
+                case 'updateCard':
+                    if(action.data.old.name) {
+                        console.log(action.data.card.id)
+                        const id = _.filter(state.stories.items, (story) => _.get(story, '_metadata.trello.id') == action.data.card.id)[0].id
+                        console.log(storyActions.update({id, story: {title: action.data.card.name}}))
+                        store.dispatch(decorate(storyActions.update({id, story: {title: action.data.card.name}})))
+                    }
+
+            }
+        } catch(e) {
+            console.log(e)
         }
-        console.log(req.params)
 
         next()
     })
+
+    server.listen(4044, function () {
+        console.log('%s trello at %s', server.name, server.url);
+    });
+
+
+    return next => action => next(action)
 }
 
 
-server.listen(4044, function () {
-  console.log('%s trello at %s', server.name, server.url);
-});
+
 
