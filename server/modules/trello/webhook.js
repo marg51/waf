@@ -27,6 +27,7 @@ export const TrelloWebhookMiddleware =  (store) => {
             var state = store.getState()
             var action = req.params.action
 
+            console.log(JSON.stringify(action,null,4))
             switch(action.type) {
                 case 'updateCard':
                     if(action.data.old.name) {
@@ -34,6 +35,12 @@ export const TrelloWebhookMiddleware =  (store) => {
                         const id = _.filter(state.stories.items, (story) => _.get(story, '_metadata.trello.id') == action.data.card.id)[0].id
                         console.log(storyActions.update({id, story: {title: action.data.card.name}}))
                         store.dispatch(decorate(storyActions.update({id, story: {title: action.data.card.name}})))
+                    }
+                    else if(action.data.old.desc) {
+                        console.log(action.data.card.id)
+                        const id = _.filter(state.stories.items, (story) => _.get(story, '_metadata.trello.id') == action.data.card.id)[0].id
+                        console.log(storyActions.update({id, story: {description: action.data.card.desc}}))
+                        store.dispatch(decorate(storyActions.update({id, story: {description: action.data.card.desc}})))
                     }
 
             }
