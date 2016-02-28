@@ -102,4 +102,27 @@ describe('StoryReducer', () => {
         })
     })
 
+    describe('teams', () => {
+        it('should add a team', () => {
+            var state = reducer(undefined, actions.add({id: 1, title:"salut"}))
+                state = reducer(state, actions.updateTeamStep({id:1, team: "frontend", step:"unstarted"}))
+
+                expect(state.items[1].teams).to.deep.equal({frontend: {step: "unstarted"}})
+        })
+        it('should update a team', () => {
+            var state = reducer(undefined, actions.add({id: 1, title:"salut"}))
+                state = reducer(state, actions.updateTeamStep({id:1, team: "frontend", step:"unstarted"}))
+                state = reducer(state, actions.updateTeamStep({id:1, team: "frontend", step:"started"}))
+
+                expect(state.items[1].teams).to.deep.equal({frontend: {step: "started"}})
+        })
+        it('should remove a team', () => {
+            var state = reducer(undefined, actions.add({id: 1, title:"salut"}))
+                state = reducer(state, actions.updateTeamStep({id:1, team: "frontend", step:"unstarted"}))
+                state = reducer(state, actions.removeTeam({id:1, team: "frontend"}))
+
+                expect(state.items[1].teams).to.deep.equal({})
+        })
+    })
+
 });

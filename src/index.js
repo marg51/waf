@@ -14,12 +14,13 @@ function AppConfig($stateProvider, $urlRouterProvider, $locationProvider) {
         url: '/',
         template: "<board/>",
         resolve: {
-            token: function($q, $state){
+            token: function($q, $state, $timeout){
                 if(localStorage.getItem('waf.token'))
                     return $q.when(localStorage.getItem('waf.token'))
                 else {
-                    alert('please login')
-                    return $q.reject('Not logged in')
+                    return $timeout(() => {
+                        return $state.go('login')
+                    })
                 }
             }
         }
@@ -31,7 +32,15 @@ function AppConfig($stateProvider, $urlRouterProvider, $locationProvider) {
     })
 
     $stateProvider.state('login', {
-        url: '/login?code',
+      url: '/login',
+      template: `<div class="well">
+            <a href="https://trello.com/1/authorize?expiration=never&name=uto.io&key=05d910022daa0558e1ada897808482b2&callback_method=fragment&scope=read,write&return_url=${encodeURIComponent(window.location.href)}/trello"><i class="fa fa-trello fa-2x"></i> Login using Trello</a><br />
+            <a href="https://github.com/login/oauth/authorize?client_id=8d57891975e4f895c94e&redirect_uri=${encodeURIComponent(window.location.href)}/github"><i class="fa fa-github fa-2x"></i> Login using Github</a>
+            <ui-view/>
+        </div>`
+    })
+    $stateProvider.state('login.gh', {
+        url: '/github?code',
         template: "<span promise='promise'></span><span ng-if='promise.isLoading'>Logging in, please wait …</span><span ng-if='promise.isLoaded'>Logged in! <a ui-sref='board'>Go to main page</a></span><span ng-if='promise.hasError'>Sorry, login failed</span>",
         reloadOnSearch: false,
         controller: function($scope, $location, $stateParams, $http, $state) {
@@ -39,6 +48,20 @@ function AppConfig($stateProvider, $urlRouterProvider, $locationProvider) {
             $location.search('code','github')
 
             $scope.promise = $http.get('/auth/github?code='+code).then(function(data) {
+                localStorage.setItem("waf.token", data.data)
+                $state.go('board')
+            })
+        }
+    })
+    $stateProvider.state('login.trello', {
+        url: '/trello?code',
+        template: "<span promise='promise'></span><span ng-if='promise.isLoading'>Logging in, please wait …</span><span ng-if='promise.isLoaded'>Logged in! <a ui-sref='board'>Go to main page</a></span><span ng-if='promise.hasError'>Sorry, login failed</span>",
+        reloadOnSearch: false,
+        controller: function($scope, $location, $stateParams, $http, $state) {
+            var code = $location.hash().split('=')[1]
+            $location.search('code','github')
+
+            $scope.promise = $http.get('/auth/trello?code='+code).then(function(data) {
                 localStorage.setItem("waf.token", data.data)
                 $state.go('board')
             })

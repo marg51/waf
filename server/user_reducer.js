@@ -21,7 +21,9 @@ export function reducer(state = INIT_STATE, action) {
                         data: {
                             token_id: action.id,
                         },
-                        token: action.token
+                        tokens: {
+                            [action.token_type]: action.token
+                        }
                     }
                 }
             })

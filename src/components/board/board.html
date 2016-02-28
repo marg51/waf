@@ -13,6 +13,7 @@
                         <i class="fa fa-circle-o-notch fa-spin" ng-if="!action.sync && !action.object._metadata"></i>
                         <img ng-if="action.object._metadata.origin == 'webapp'" ng-src="{{action.object._metadata.user.url}}" width='20px'/>
                         <span ng-if="action.object._metadata.origin == 'github'"><i class="fa fa-github"></i></span>
+                        <span ng-if="action.object._metadata.origin == 'trello'"><i class="fa fa-trello"></i></span>
                     </span>
                 </div>
             </div>

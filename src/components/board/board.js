@@ -3,7 +3,7 @@ import * as boardActions from './actions'
 
 export function BoardController($scope, store, $timeout, uuid, $modal) {
 
-    window.socket = io('http://localhost:4042', {
+    window.socket = io({
         query: 'token='+localStorage.getItem('waf.token')
     });
 
@@ -17,6 +17,9 @@ export function BoardController($scope, store, $timeout, uuid, $modal) {
     socket.on('state', function(state){
       store.dispatch({type: '//init/state', state})
     });
+    socket.on('me', function(data) {
+        $scope.me = data
+    })
     socket.on('dispatch', function(action){
       store.dispatch(action)
     });
@@ -51,8 +54,7 @@ export function BoardController($scope, store, $timeout, uuid, $modal) {
                 size: 'lg',
                 template: `<div story-modal="state.stories.items['${story_id}']"/>`,
                 scope: $scope,
-                animation: false,
-                keyboard: false // it's handled by a shortcut
+                animation: false
             })
 
             // this is(should be) only triggered when you click outside the modal
