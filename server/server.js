@@ -23,7 +23,7 @@ io.use(socketioJwt.authorize({
 
 // REDUX stuff
 import {initStore} from './store';
-
+require('./modules/trello/webhook')
 
 // reload state from previous session
 // import {GithubMiddleware} from './modules/github'
